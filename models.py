@@ -5,6 +5,7 @@ from google.appengine.ext import db
 from google.appengine.api import memcache
 import yaml, logging
 import settings
+import webapp2
 log = logging.getLogger(__name__)
 
 
@@ -49,7 +50,15 @@ class Var(db.Model):
     """ edytowalne zmienne """        
     raw       = db.TextProperty(required=True)            
     desc      = db.StringProperty()
-
+    
+    @property
+    def name(self):
+        return self.key().name()
+    
+    @property
+    def value(self):
+        return yaml.load(self.raw)
+    
     @classmethod
     def update_from_settings(cls):
         for name, (desc, value) in settings.VARS.iteritems():
@@ -59,17 +68,27 @@ class Var(db.Model):
 
     @classmethod
     def get_value(cls, name):
+        current_request = webapp2.WSGIApplication.request
+        if current_request is not None:
+            if hasattr(current_request, 'vars_registry') and name in current_request.vars_registry:
+                return current_request.vars_registry[name]
+        
         value = memcache.get('Var-%s'%name) #@UndefinedVariable
         if value is not None:
             return value
         var = cls.get_by_key_name(name)
         if var is not None:
-            value = yaml.load(var.raw)
+            value = var.value
             memcache.add('Var-%s'%name, value) #@UndefinedVariable        
             return value
         
         desc, value = settings.VARS[name] #@UnusedVariable
         memcache.add('Var-%s'%name, value) #@UndefinedVariable
+        
+        if current_request is not None:
+            if not hasattr(current_request, 'vars_registry'):
+                current_request.vars_registry = {}
+            current_request.vars_registry[name]=value            
         return value
     
     @classmethod
@@ -84,7 +103,7 @@ class Var(db.Model):
         memcache.set('Var-%s'%name, value) #@UndefinedVariable
     
     def __repr__(self):
-        return u'<Var(%s:%r)>'%(self.key().name(), self.value)
+        return u'<Var(%s:%r)>'%(self.name, self.value)
             
 class Image(db.Model):
     """ obrazki """

@@ -1,0 +1,15 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+        <title>{{ Var.get_value('title') }}</title>
+    </head>
+    
+    <body>        
+        <div id="content">{% block content %}{% endblock %}</div>
+        <div id="footer">
+            {% block footer %}
+            &copy; Copyright 2011 by Paweł Pałucki.
+            {% endblock %}
+        </div>
+    </body>    
+</html>

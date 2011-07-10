@@ -3,12 +3,17 @@ from webapp2_extras import jinja2
 from google.appengine.api import users
 import webapp2
 import string
+import settings
+from models import Var
 
 jinja2.default_config.update(
     globals=dict(
         create_login_url = users.create_login_url,
         create_logout_url = users.create_logout_url, 
-        get_req = webapp2.get_request,             
+        get_req = webapp2.get_request,
+        uri_for = webapp2.uri_for,
+        settings = settings,
+        Var = Var,
     ),
     filters=dict(
         lower = string.lower,

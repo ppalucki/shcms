@@ -1,5 +1,27 @@
-Vars:
+{% extends "admin/base.html" %}
+{% block bc %}{{ super() }}&nbsp; -> Vars{% endblock %}
+
+{% block content %}
 <hr>
-{% for var in vars %}
-    {{ var.name }}: {{var.value}} <br>
+{% for form,var in forms_and_vars %}
+    <form method="POST">
+        <input type="hidden" name="name" value="{{var.name}}" />
+        {{ var.desc }}:
+        {{ form.raw() }}
+        {% if form.raw.errors %}
+        <ul class="errorlist">
+           {% for error in form.raw.errors %}        
+           <li>{{ error }}</li>
+           {% endfor %}
+        </ul>
+        {% endif %}        
+        <input type="submit" value="Zapisz" />
+    </form>
 {% endfor %}
+<hr>
+<h2>Dodatkowe akcje</h2>
+<ul>
+    <li><a href="{{uri_for('update_vars')}}">Aktualizuj zmienne z settings.</li>
+</ur>
+
+{% endblock %}

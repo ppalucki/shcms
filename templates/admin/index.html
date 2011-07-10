@@ -1,5 +1,18 @@
-Witam {{user.nickname()) w panelu admina: 
-<ul>
-    <li><a href="vars">Edytuj zmienne</a></li>
-    <li><a href="pages">Edytuj strony</a></li>
+{% extends "admin/base.html" %}
+{% block bc %}
+Admin
+{% endblock %}
+{% block content %}
+<hr>
+<p>
+Witam "{{user.nickname()}}" w panelu admina:
+</p> 
+
+<h2>Główna akcje</h2>
+<ul>    
+    <li><a href="{{uri_for('pages')}}">Edytuj strony</a></li>
+    <li><a href="{{uri_for('vars')}}">Edytuj zmienne</a></li>
 </ul>
+
+
+{% endblock %}

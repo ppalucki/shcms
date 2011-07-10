@@ -15,4 +15,5 @@ sys.path[0:0] = [
 import dev_appserver
 dev_appserver.fix_sys_path()
 from google.appengine.dist import use_library
-use_library('django', '1.2')
+#use_library('django', '1.2')
+#os.environ['DJANGO_SETTINGS_MODULE']='settings'

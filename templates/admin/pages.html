@@ -1,4 +1,9 @@
-Pages:
+{% extends "admin/base.html" %}
+{% block bc %}{{ super() }}&nbsp; ->  Pages{% endblock %}
+{% block content %}
+
+<hr>
 {% for page in pages %}
     {{ page }}
 {% endfor %}
+{% endblock %}

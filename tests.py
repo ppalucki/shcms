@@ -11,13 +11,15 @@ import settings
 import urllib
 from main import app
 
+
 class CMSTestCase(unittest.TestCase):    
     
-    def __init__(self, *args, **kw):
+    def __init__(self, *args, **kw):        
         tb = testbed.Testbed()    
         tb.activate() # First, create an instance of the Testbed class.    
         tb.init_datastore_v3_stub() # Next, declare which service stubs you want to use.
         tb.init_memcache_stub()
+        tb.init_user_stub()
         
         self.resp = None
         super(CMSTestCase, self).__init__(*args, **kw)
@@ -84,25 +86,27 @@ class CMSTestCase(unittest.TestCase):
         eq_(memcache.get('Var-langs'), newvalue) #@UndefinedVariable
 
     def test_base(self):
-        """ podstawowe widoki do testowania cms """
         self.get('/test/direct?x=2')
+        self.as200()
         self.asContains('* x=2', 'foo:bar', '/test/direct')
         
         self.get('/test/hello')
+        self.as200()
         self.asContains('hello')
         
         self.get('/test/template')
+        self.as200()
+        self.asContains('Login?continue')
         
-        
-
-    def test_edit_vars(self):
-        pass
+    def test_edit_vars(self):        
+        from wx.py.PyShell import main; main(dict(globals(), ** locals()))
     
     def test_homepage(self):
         self.get('/')
-        self.as200() 
-        
+        self.as200()         
         self.get('/admin')
+        
+    
         
         
 
