@@ -1,0 +1,10 @@
+<pre>
+req.path: {{req.path}}
+
+foo:{{foo}}
+
+params:
+{% for n,v in req.params.iteritems() -%}
+ * {{n}}={{v}}
+{% endfor %}
+</pre>

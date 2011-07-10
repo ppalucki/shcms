@@ -1,0 +1,11 @@
+{{ foo }} sadf + {{kawa}} <br>
+
+{% for arg in args %}
+    {{ arg }}
+{% endfor %}
+
+{% for n,v in params.iteritems() %}
+    {{n}}:{{v|upper}}<br>
+{% endfor %}
+<hr>
+<a href="{{create_login_url(req.path)}}"> login </a>
