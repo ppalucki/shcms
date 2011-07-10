@@ -87,7 +87,9 @@ class BaseHandler(webapp2.RequestHandler):
         # before
         self.pre_dispatch_lang()
         self.pre_dispatch_flash()
-        self.pre_dispatch_admin()
+        resp = self.pre_dispatch_admin()
+        if resp is not None:
+            return resp
                                 
         # super
         resp = super(BaseHandler, self).dispatch()
@@ -153,7 +155,6 @@ class TestHandler(BaseHandler):
 class HomeHandler(BaseHandler):
     def get(self):
         r = self.render('home.html')
-        print >>sys.stderr, r
         return r
         
     

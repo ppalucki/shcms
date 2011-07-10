@@ -10,7 +10,7 @@ import jinja2 #@UnusedImport
 
 # internal libs
 from urls import urls
-from google.appengine.tools.dev_appserver import HardenedModulesHook
+
 
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
@@ -21,6 +21,7 @@ def enable_appstats(app):
 
 def enable_jinja2_debugging():
     """Enables blacklisted modules that help Jinja2 debugging."""
+    from google.appengine.tools.dev_appserver import HardenedModulesHook
     HardenedModulesHook._WHITE_LIST_C_MODULES += ['_ctypes', 'gestalt']
         
 # Is this the development server?
