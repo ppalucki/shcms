@@ -24,12 +24,14 @@ for entry in feed.entry:
     for folder in entry.InFolders():
         print ' *',folder.title
 
+
 ### copying
 #duplicated_entry = client.Copy(source_entry, 'MyTwin')
 
 # Tip: You can use the gdata.client.DocsClient.GetFileContent() method to return a 
 # files contents in memory (rather than writing it to local disk). The examples below write the file to disk.
 entry = client.GetDoc('document:1irGP6uYIQgK6zPEHWFilc4gSN4La8I5lb3LhPWIiGnM')
+pr(entry)
 pr(client.get_file_content(entry.content.src
                               #, exportFormat='html', format='html'
                               ))
