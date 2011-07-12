@@ -1,0 +1,57 @@
+[INFO     2011-07-12 23:36:05,293 bulkloader.py] Logging to bin\copy_data.log
+[INFO     2011-07-12 23:36:05,293 bulkloader.py] Throttling transfers:
+[INFO     2011-07-12 23:36:05,309 bulkloader.py] Bandwidth: 250000 bytes/second
+[INFO     2011-07-12 23:36:05,309 bulkloader.py] HTTP connections: 8/second
+[INFO     2011-07-12 23:36:05,309 bulkloader.py] Entities inserted/fetched/modified: 20/second
+[INFO     2011-07-12 23:36:05,325 bulkloader.py] Batch Size: 10
+[DEBUG    2011-07-12 23:36:05,325 bulkloader.py] [Thread-1] RestoreThread: started
+[DEBUG    2011-07-12 23:36:05,325 bulkloader.py] [Thread-1] RestoreThread: exiting
+[DEBUG    2011-07-12 23:36:05,341 bulkloader.py] [Thread-2] RestoreThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-3] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-4] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-5] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-6] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-7] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-8] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-9] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-10] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-11] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 adaptive_thread_pool.py] [Thread-12] WorkerThread: started
+[DEBUG    2011-07-12 23:36:05,341 bulkloader.py] Configuring remote_api. url_path = /remote_api, servername = 127.0.0.1:8080
+[DEBUG    2011-07-12 23:36:05,341 bulkloader.py] [Thread-2] RestoreThread: exiting
+[DEBUG    2011-07-12 23:36:05,341 bulkloader.py] Bulkloader using app_id: sh-cms
+[INFO     2011-07-12 23:36:05,341 bulkloader.py] Connecting to 127.0.0.1:8080/remote_api
+[DEBUG    2011-07-12 23:36:07,431 bulkloader.py] [Thread-13] ProgressTrackerThread: started
+[DEBUG    2011-07-12 23:36:07,431 bulkloader.py] [Thread-14] DataSourceThread: started
+[INFO     2011-07-12 23:36:07,431 bulkloader.py] Starting import; maximum 10 entities per post
+[DEBUG    2011-07-12 23:36:07,447 bulkloader.py] [Thread-14] DataSourceThread: exiting
+[DEBUG    2011-07-12 23:36:07,463 bulkloader.py] Waiting for worker threads to finish...
+[DEBUG    2011-07-12 23:36:07,463 adaptive_thread_pool.py] [Thread-3] Got work item [1-4]
+[DEBUG    2011-07-12 23:36:07,572 bulkloader.py] [Thread-3] [1-4] Transferred 4 entities in 0.1 seconds
+[DEBUG    2011-07-12 23:36:07,572 adaptive_thread_pool.py] Increasing active thread count to 2
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-7] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-8] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-9] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-6] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-10] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-11] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-12] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-4] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-5] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] [Thread-3] WorkerThread: exiting
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,602 adaptive_thread_pool.py] Waiting for Anonymous_WorkerThread to exit
+[DEBUG    2011-07-12 23:36:07,634 bulkloader.py] Waiting for progress_thread to terminate...
+[DEBUG    2011-07-12 23:36:07,650 bulkloader.py] [Thread-13] ProgressTrackerThread: exiting
+[DEBUG    2011-07-12 23:36:07,665 bulkloader.py] ... done.
+[INFO     2011-07-12 23:36:07,665 bulkloader.py] 4 entities total, 0 previously transferred
+[INFO     2011-07-12 23:36:07,665 bulkloader.py] 4 entities (1195 bytes) transferred in 2.3 seconds
+[INFO     2011-07-12 23:36:07,665 bulkloader.py] All entities successfully transferred
