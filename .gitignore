@@ -3,5 +3,4 @@
 *.project
 .settings
 .noseids
-app/password.py 
-
+./app/password.py 

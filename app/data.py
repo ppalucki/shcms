@@ -129,7 +129,8 @@ def get_albums_data(login, password):
     
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    from password import PASSWORD    
+    import sys
+    PASSWORD=sys.argv[1]    
     docs = get_docs_data('skicms@gmail.com', PASSWORD)
     albums = get_albums_data('skicms@gmail.com', PASSWORD)
     from pprint import pprint
