@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-# -*- coding: utf-8 -*-
 from datetime import datetime
 from google.appengine.ext import db
 from google.appengine.api import memcache
@@ -8,44 +7,34 @@ import settings
 import webapp2
 log = logging.getLogger(__name__)
 
-
-class ModfiedModel(db.Model):
-    added       = db.DateTimeProperty(required=True)
-    modified    = db.DateTimeProperty(required=True)
+class Page(db.Model):
+    """ strona """
     
-    def __init__(self, *args, **kw):
-        kw['added']=kw['modified']=datetime.now()
-        super(ModfiedModel, self).__init__(*args, **kw)
-    
-    def put(self):  
-        self.modified=datetime.now()
-        super(ModfiedModel, self).put()
+    resid       = db.StringProperty(required=True) 
+    slug        = db.StringProperty(verbose_name=u'slug', required=True)    
+    lang        = db.StringProperty(verbose_name=u'jęyzk', required=True)
+    #order       = db.FloatProperty(verbose_name=u'kolejność', required=True)    
+    hidden      = db.BooleanProperty(default=False)
+    title       = db.StringProperty(verbose_name=u'tytuł', required=True)
+    content     = db.TextProperty(verbose_name=u'treść', required=True)
+    etag        = db.StringProperty(verbose_name=u'etag', required=True)
+    updated     = db.DateTimeProperty(verbose_name=u'ostatnio zmodyfikowany', required=True)
 
-class Page(ModfiedModel):
+
+class Album(db.Model):
+    name        = db.StringProperty(verbose_name=u'slug', required=True)
+    lang        = db.StringProperty(verbose_name=u'jęyzk', required=True)
+
+class Photo(db.Model):
     """ strona """
     
     slug        = db.StringProperty(verbose_name=u'slug', required=True)    
     lang        = db.StringProperty(verbose_name=u'jęyzk', required=True)
     order       = db.FloatProperty(verbose_name=u'kolejność', required=True)    
     hidden      = db.BooleanProperty(default=False)
-        
-    
-class PageTranslation(ModfiedModel):
-    """ tlumaczenie strony """
     title       = db.StringProperty(verbose_name=u'tytuł', required=True)
     content     = db.TextProperty(verbose_name=u'treść', required=True)
-
-#    
-#class PageHistory(db.Model):
-#    """ historia zmian w treści strony """
-#    page        = db.ReferenceProperty(PageTranslation)
-#    added       = db.DateProperty(default=lambda: datetime.now())    
-#
-#    def __init__(self, *args, **kw):
-#        kw['added']=kw['modified']=datetime.now()
-#        super(Page, self).__init__(*args, **kw)
-    
-        
+            
 class Var(db.Model):
     """ edytowalne zmienne """        
     raw       = db.TextProperty(required=True)            
