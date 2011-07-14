@@ -25,7 +25,7 @@ def get_docs_data(login, password):
     client = gdata.docs.client.DocsClient(source=settings.GDATA_SOURCE)
     #client.ssl = True  # Force all API requests through HTTPS
     #client.http_client.debug = False  # Set to True for debugging HTTP requests
-    log.info('auth in google docs')
+    log.info('auth in google docs login=%r password=%r', login, password)
     client.ClientLogin(login, password, settings.GDATA_SOURCE)
     log.info('loading all docs ...')
     feed = client.GetDocList(uri='/feeds/default/private/full?showfolders=true')

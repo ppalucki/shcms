@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*
 from google.appengine.ext import testbed
-from main import app
+from admin import app
 from django.utils import autoreload
 
 def main():    
@@ -18,6 +18,5 @@ def main():
 #    httpserver.serve(app, host='127.0.0.1', port='8080')
 
 if __name__ == '__main__':
-    # Respond to requests until process is killed
-        
+    # Respond to requests until process is killed        
     autoreload.main(main)

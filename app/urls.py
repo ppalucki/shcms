@@ -14,5 +14,7 @@ urls = [
     Route('/admin', handlers.AdminHandler, handler_method='index', name='admin'),
     Route('/admin/vars', handlers.AdminHandler, handler_method='vars', name='vars'),
     Route('/admin/update_vars', handlers.AdminHandler, handler_method='update_vars', name='update_vars'),
-    Route('/admin/pages', handlers.AdminHandler, handler_method='pages', name='pages'),    
+    Route('/admin/pages', handlers.AdminHandler, handler_method='pages', name='pages'),
+    Route('/admin/update_pages', handlers.AdminHandler, handler_method='update_pages', name='update_pages'),
+        
 ]

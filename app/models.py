@@ -10,16 +10,16 @@ log = logging.getLogger(__name__)
 class Page(db.Model):
     """ strona """
     
-    resid       = db.StringProperty(required=True) 
-    slug        = db.StringProperty(verbose_name=u'slug', required=True)    
-    lang        = db.StringProperty(verbose_name=u'jęyzk', required=True)
+    slug        = db.StringProperty(required=True)    
+    lang        = db.StringProperty(required=True)
     #order       = db.FloatProperty(verbose_name=u'kolejność', required=True)    
-    hidden      = db.BooleanProperty(default=False)
-    title       = db.StringProperty(verbose_name=u'tytuł', required=True)
-    content     = db.TextProperty(verbose_name=u'treść', required=True)
-    etag        = db.StringProperty(verbose_name=u'etag', required=True)
-    updated     = db.DateTimeProperty(verbose_name=u'ostatnio zmodyfikowany', required=True)
+    hidden      = db.BooleanProperty(default=False, required=True)
+    title       = db.StringProperty(required=True)
+    content     = db.TextProperty(required=True)
+    etag        = db.StringProperty(required=True)
+    updated     = db.DateTimeProperty(required=True)
 
+     
 
 class Album(db.Model):
     name        = db.StringProperty(verbose_name=u'slug', required=True)
@@ -89,7 +89,9 @@ class Var(db.Model):
             raise ValueError('expected type=%s but got=%s'%(expected_type, type(value)))
         var.raw = yaml.dump(value)
         var.put() 
-        memcache.set('Var-%s'%name, value) #@UndefinedVariable
+        
+        assert memcache.set('Var-%s'%name, value) #@UndefinedVariable
+        log.info('Var "%s" updated:', name, memcache.get('Var-%s'%name)) #@UndefinedVariable
     
     def __repr__(self):
         return u'<Var(%s:%r)>'%(self.name, self.value)

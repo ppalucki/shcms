@@ -6,7 +6,8 @@
 {% for form,var in forms_and_vars %}
     <form method="POST">
         <input type="hidden" name="name" value="{{var.name}}" />
-        {{ var.desc }}:
+        <span> {{ var.desc }}</span> 
+        (<b>{{Var.get_value(var.name)}}</b>): 
         {{ form.raw() }}
         {% if form.raw.errors %}
         <ul class="errorlist">

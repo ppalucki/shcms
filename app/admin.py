@@ -12,7 +12,6 @@ import jinja2 #@UnusedImport
 # internal libs
 from urls import urls
 
-
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 
 def enable_appstats(app):

@@ -5,8 +5,11 @@ from google.appengine.api import users
 from models import Var
 import logging
 from forms import VarForm
-import sys
 from base64 import b64decode, b64encode
+from google.appengine.ext import deferred
+from util import update_pages, update_pages_deffered
+from models import Page
+
 log = logging.getLogger()
 
 class BaseHandler(webapp2.RequestHandler):
@@ -122,9 +125,8 @@ class AdminHandler(BaseHandler):
             for var in Var.all():
                 if name == var.name:
                     form = VarForm(self.request.POST, obj=var) 
-                    if form.validate():
-                        form.populate_obj(var)
-                        var.put()   
+                    if form.validate():                        
+                        Var.set_value(var.name, form.data['raw'])                        
                         self.set_flash(u'Zmienna "%s" zapisana.'%var.desc)
                         return self.redirect_to('vars')
                 else:
@@ -139,9 +141,23 @@ class AdminHandler(BaseHandler):
         Var.update_from_settings()
         self.set_flash('Zmienne zaktualizowane.')
         return self.redirect_to('vars')
+    
+    def update_pages(self):        
+        
+        from admin import debug
+        if debug:
+            log.info('debugmode:calling: update_pages')
+            update_pages()
+        else:
+            task = deferred.defer(update_pages_deffered)
+            log.info('update_pages task added to queue with: enqueued=%s deleted=%s'%(task.was_enqueued,task.was_deleted))
+            
+        self.set_flash('Zadanie zakolejkowane.')
+        return self.redirect_to('pages')
                     
     def pages(self):
-        return self.render('admin/pages.html')
+        
+        return self.render('admin/pages.html', pages=Page.all())
 
 class TestHandler(BaseHandler):
     """ handler do testow srodowiska """

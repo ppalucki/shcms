@@ -2,8 +2,17 @@
 {% block bc %}{{ super() }}&nbsp; ->  Pages{% endblock %}
 {% block content %}
 
+Akcje:
+<ul>
+  <li><a href="{{uri_for('update_pages')}}">Aktualizuj strony</a></li> 
+</ul>
+
 <hr>
+<h2>Pages:</h2>
+<ul>
 {% for page in pages %}
-    {{ page }}
+    <li><b>{{page.slug}}</b>/{{page.lang}}: "{{ page.title }}" </li>
 {% endfor %}
+</ul>
+<hr>
 {% endblock %}
