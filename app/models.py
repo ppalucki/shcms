@@ -2,10 +2,11 @@
 from datetime import datetime
 from google.appengine.ext import db
 from google.appengine.api import memcache
-import yaml, logging
+import yaml
+import logging as log
 import settings
 import webapp2
-log = logging.getLogger(__name__)
+
 
 class Page(db.Model):
     """ strona """
@@ -91,7 +92,6 @@ class Var(db.Model):
         var.put() 
         
         assert memcache.set('Var-%s'%name, value) #@UndefinedVariable
-        log.info('Var "%s" updated:', name, memcache.get('Var-%s'%name)) #@UndefinedVariable
     
     def __repr__(self):
         return u'<Var(%s:%r)>'%(self.name, self.value)

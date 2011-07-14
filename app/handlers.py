@@ -3,14 +3,13 @@ import webapp2
 from util import render_to_response
 from google.appengine.api import users
 from models import Var
-import logging
+import logging as log
 from forms import VarForm
 from base64 import b64decode, b64encode
 from google.appengine.ext import deferred
 from util import update_pages, update_pages_deffered
 from models import Page
 
-log = logging.getLogger()
 
 class BaseHandler(webapp2.RequestHandler):
     #
@@ -32,10 +31,9 @@ class BaseHandler(webapp2.RequestHandler):
                 is_admin = True
             else:
                 self.user = user = users.get_current_user()
-                is_admin = users.is_current_user_admin()
-                
+                is_admin = users.is_current_user_admin()                
             can_edit = is_admin or (user is not None and (user.email() in Var.get_value('admins')))            
-            log.info('current_user: admin=%s can_edit=%s', users.is_current_user_admin(), can_edit)            
+            log.debug('current_user: admin=%s can_edit=%s', users.is_current_user_admin(), can_edit)            
             if not can_edit:
                 if self.request.method=='POST':                                        
                     self.abort(403) # just 403 - for POSTs
@@ -148,16 +146,19 @@ class AdminHandler(BaseHandler):
         return self.redirect_to('vars')
     
     def update_pages(self):        
-        
         from admin import debug
         if debug:
             log.info('debugmode:calling: update_pages')
             update_pages()
+            name,url='test'
         else:
+            log.info('deffering "update_pages" task...')            
             task = deferred.defer(update_pages_deffered)
-            log.info('update_pages task added to queue with: enqueued=%s deleted=%s'%(task.was_enqueued,task.was_deleted))
+            name = task.name
+            url = task.url
+            log.info('update_pages task "%s" at url="%s" added to queue with: enqueued=%s deleted=%s'%(name, url, task.was_enqueued,task.was_deleted))
             
-        self.set_flash('Zadanie zakolejkowane.')
+        self.set_flash('Zadanie "%s" at url="%s" zakolejkowane.'%(name, url))
         return self.redirect_to('pages')
                     
     def pages(self):

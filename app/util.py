@@ -3,10 +3,7 @@ from data import get_docs_data, get_albums_data
 from google.appengine.ext import deferred
 from helpers import render_template
 from models import Page, Album, Photo, Var
-import logging
-import webapp2
-
-log = logging.getLogger(__name__)
+import logging as log
 
 def render_to_response(template_name, **ctx):    
     return webapp2.Response(
@@ -35,11 +32,6 @@ def get_doc_content(src):
     return response.content   
      
 def update_pages():
-
-        
-        
-
-    
     log.info('-> updateing pages')
     docs = get_docs_data(Var.get_value('admin'),Var.get_value('password'))
     

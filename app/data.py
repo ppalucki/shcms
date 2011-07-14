@@ -5,8 +5,7 @@ import settings
 import gdata.photos.service
 import gdata.media
 import gdata.geo
-import logging
-log = logging.getLogger(__name__)
+import logging as log
 from datetime import datetime
 
 def pr(x):
