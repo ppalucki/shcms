@@ -4,3 +4,6 @@
 .settings
 .noseids
 ./app/password.py 
+app/local.data
+remote.sqlite3
+skip

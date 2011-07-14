@@ -40,7 +40,12 @@ class BaseHandler(webapp2.RequestHandler):
                 if self.request.method=='POST':                                        
                     self.abort(403) # just 403 - for POSTs
                 else:                    
-                    return self.redirect(users.create_login_url(self.request.path)) # login and redirect
+                    if user:
+                        # not admin 
+                        return self.render('admin/login.html')                        
+                    else:
+                        # not authorized user so go to login
+                        return self.redirect(users.create_login_url(self.request.path)) # login and redirect
             assert can_edit and user is not None
         
     #

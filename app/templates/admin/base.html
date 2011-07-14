@@ -4,6 +4,9 @@
         <title>Admin</title>
     </head>
     <body>
+        <div>
+            <a href="{{create_logout_url('/admin')}}">Wyloguj</a>
+        </div>
         {% if handler.flash %}        
             <div id="flash">{{ handler.flash }} </div>
         {% endif %}
@@ -21,6 +24,5 @@
             &copy; Copyright 2011 by Paweł Pałucki.
             {% endblock %}
         </div>
-    </body>
-    
+    </body>    
 </html>
