@@ -5,7 +5,8 @@ import settings
 import gdata.photos.service
 import gdata.media
 import gdata.geo
-import logging as log
+import logging
+
 from datetime import datetime
 
 def pr(x):
@@ -24,14 +25,14 @@ def get_docs_data(login, password):
     client = gdata.docs.client.DocsClient(source=settings.GDATA_SOURCE)
     #client.ssl = True  # Force all API requests through HTTPS
     #client.http_client.debug = False  # Set to True for debugging HTTP requests
-    log.info('auth in google docs login=%r password=%r', login, password)
+    logging.info('auth in google docs login=%r password=%r', login, password)
     client.ClientLogin(login, password, settings.GDATA_SOURCE)
-    log.info('loading all docs ...')
+    logging.info('loading all docs ...')
     feed = client.GetDocList(uri='/feeds/default/private/full?showfolders=true')
     lang_folders=[]
     menu_folders=[]
     docs=[]
-    log.info('parsing all docs feed...')
+    logging.info('parsing all docs feed...')
     for entry in feed.entry:
         d = dict(
             updated_str = entry.updated.text,
@@ -42,7 +43,7 @@ def get_docs_data(login, password):
             src = entry.content.src,
             etag = entry.etag
         )
-        log.info('loaded entry: %s', d['res_id'])
+        logging.info('loaded entry: %s', d['res_id'])
         
         if d['doctype']=='folder':
             if 'langs' in d['parents']:
@@ -54,18 +55,18 @@ def get_docs_data(login, password):
     
     slug_folders_titles = [f['title'] for f in menu_folders]
     lang_folders_titles = [f['title'] for f in lang_folders]
-    log.info('got folders langs=%r and slugs=%s', lang_folders_titles, slug_folders_titles)
+    logging.info('got folders langs=%r and slugs=%s', lang_folders_titles, slug_folders_titles)
     
     # decorate docs objects with slug and lang
     good_docs = []
     for d in docs:
         langs = list(set(d['parents']).intersection(lang_folders_titles))        
         if len(langs)!=1:
-            log.warn(u'document title=%s res_id=%s nie ma dokladnie jednego lang a ma %r - ignoring this doc!', d['title'], d['res_id'], langs)
+            logging.warn(u'document title=%s res_id=%s nie ma dokladnie jednego lang a ma %r - ignoring this doc!', d['title'], d['res_id'], langs)
             continue
         slugs = list(set(d['parents']).intersection(slug_folders_titles))
         if len(langs)!=1:
-            log.warn(u'document title=%s res_id=%s nie ma dokladnie jednego slug a ma %r - ignoring this doc!', d['title'], d['res_id'], slugs)
+            logging.warn(u'document title=%s res_id=%s nie ma dokladnie jednego slug a ma %r - ignoring this doc!', d['title'], d['res_id'], slugs)
             continue
         
         d['lang']=langs[0]
@@ -74,7 +75,7 @@ def get_docs_data(login, password):
         d.pop('parents')        
         d['updated'] = datetime.strptime(d.pop('updated_str').split('.')[0], '%Y-%m-%dT%H:%M:%S')  
         good_docs.append(d)
-    log.info('returning %s documents', len(good_docs))
+    logging.info('returning %s documents', len(good_docs))
     return good_docs
 
 
@@ -89,17 +90,17 @@ def get_albums_data(login, password):
                   'width': 254}.....
 
     """
-    log.info('auth in google photos')
+    logging.info('auth in google photos')
     gd_client = gdata.photos.service.PhotosService()
     gd_client.email = login 
     gd_client.password = password
     gd_client.source = settings.GDATA_SOURCE
     gd_client.ProgrammaticLogin()
-    log.info('loading albums...')
+    logging.info('loading albums...')
     feed = gd_client.GetUserFeed()
     
     albums=[]
-    log.info('parsing albums...')
+    logging.info('parsing albums...')
     for album in feed.entry:
         ad = dict(
             title = album.title.text,
@@ -107,7 +108,7 @@ def get_albums_data(login, password):
             access = album.access.text,
             photos = [],
         )
-        log.info('loading photos from album %s ...', ad['res_id'])        
+        logging.info('loading photos from album %s ...', ad['res_id'])        
         photos = gd_client.GetFeed('/data/feed/api/user/%s/albumid/%s?kind=photo' % (login, album.gphoto_id.text))        
         for photo in photos.entry:
             pd = dict(
@@ -118,11 +119,11 @@ def get_albums_data(login, password):
                 mimetype = photo.content.type,
                 src = photo.content.src,                
             )
-            log.info('got photo: %s', pd['res_id'])
+            logging.info('got photo: %s', pd['res_id'])
             ad['photos'].append(pd)
-        log.info('got %s photos', len(ad['photos']))
+        logging.info('got %s photos', len(ad['photos']))
         albums.append(ad)
-    log.info('returning %s albums', len(albums))
+    logging.info('returning %s albums', len(albums))
     return albums
     
     

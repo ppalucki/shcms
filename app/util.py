@@ -3,7 +3,7 @@ from data import get_docs_data, get_albums_data
 from google.appengine.ext import deferred
 from helpers import render_template
 from models import Page, Album, Photo, Var
-import logging as log
+import logging
 import webapp2
 
 def render_to_response(template_name, **ctx):    
@@ -18,12 +18,7 @@ def direct_render(template_name, **ctx):
         return render_to_response(template_name, **ctx)
     return _direct_render
 
-def update_pages_deffered():
-    try:
-        update_pages()
-    except Exception:
-        log.exception('deffered function "update_pages" exception:')
-        raise deferred.PermanentTaskFailure
+
    
 def get_doc_content(src):
     """ src - src url """
@@ -33,7 +28,7 @@ def get_doc_content(src):
     return response.content   
      
 def update_pages():
-    log.info('-> updateing pages')
+    logging.info('-> updateing pages')
     docs = get_docs_data(Var.get_value('admin'),Var.get_value('password'))
     
     docs_by_keys = dict((doc['res_id'],doc) for doc in docs)
@@ -44,7 +39,7 @@ def update_pages():
     for page in Page.all():
         # delete
         if not page.key().name() in docs_by_keys:
-            log.info('page %s deleted'%doc['res_id'])
+            logging.info('page %s deleted'%doc['res_id'])
             page.delete()
             deleted_cnt+=1
 
@@ -57,7 +52,7 @@ def update_pages():
             page.updated = doc['updated']
             page.content = get_doc_content(doc['src'])
             page.put()            
-            log.info('page %s updated'%doc['res_id'])            
+            logging.info('page %s updated'%doc['res_id'])            
             updated_or_deleted.add( page.key().name() )
             updated_cnt+=1
         
@@ -76,12 +71,21 @@ def update_pages():
             content = get_doc_content(doc['src']),
         )
         page.put()        
-        log.info('page %s created'%doc['res_id'])
+        logging.info('page %s created'%doc['res_id'])
         created_cnt+=1
         
-    log.info('<- updateing pages updated=%s created=%s deleted=%s'%(updated_cnt, created_cnt, deleted_cnt))
+    logging.info('<- updateing pages updated=%s created=%s deleted=%s'%(updated_cnt, created_cnt, deleted_cnt))
 
 
 def update_photos():
     albums = get_albums_data()
     pass
+
+def update_pages_deffered():
+    logging.info('-> update_pages_deffered')
+    try:
+        update_pages()
+    except Exception:
+        logging.exception('<- deffered function "update_pages" exception:')
+        raise deferred.PermanentTaskFailure
+    logging.info('<- update_pages_deffered')

@@ -3,7 +3,7 @@ from datetime import datetime
 from google.appengine.ext import db
 from google.appengine.api import memcache
 import yaml
-import logging as log
+import logging
 import settings
 import webapp2
 
@@ -53,7 +53,7 @@ class Var(db.Model):
     def update_from_settings(cls):
         for name, (desc, value) in settings.VARS.iteritems():
             raw = yaml.dump(value)
-            log.debug('inserting var=%s raw=%r', name, raw)  
+            logging.debug('inserting var=%s raw=%r', name, raw)  
             cls.get_or_insert(key_name=name, raw=raw, desc=desc)
 
     @classmethod
