@@ -31,6 +31,12 @@ handlers:
 - url: /admin.*
   script: admin.py
   
+- url: /d.*
+  script: admin.py
+
+- url: /rp.*
+  script: admin.py
+  
 - url: /.*
   script: home.py
 

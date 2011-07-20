@@ -8,6 +8,7 @@ import settings
 import webapp2
 
 
+
 class Page(db.Model):
     """ strona """
     
@@ -19,8 +20,27 @@ class Page(db.Model):
     content     = db.TextProperty(required=True)
     etag        = db.StringProperty(required=True)
     updated     = db.DateTimeProperty(required=True)
+    src         = db.TextProperty()
 
-     
+    @classmethod
+    def get_by_slug(cls, slug, lang):
+        return cls.all().filter('slug =', slug).filter('lang =', lang).get()
+    
+    @classmethod
+    def get_by_res_id(cls, res_id):
+        return cls.get_by_key_name(res_id)
+        
+    def __repr__(self):
+        return u'<Page %s@%s>'%(self.slug, self.lang)
+    
+    def update_content(self):
+        from util import get_doc_content
+        self.content = get_doc_content(self.src)
+        self.put()
+        
+    @property
+    def res_id(self):
+        return self.key().name()
 
 class Album(db.Model):
     name        = db.StringProperty(verbose_name=u'slug', required=True)

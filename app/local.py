@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*
 from google.appengine.ext import testbed
 from admin import app
-from django.utils import autoreload
+from django.utils import autoreload #@UnresolvedImport
+import sys
 
 def main():    
     from wsgiref.simple_server import make_server
@@ -10,7 +11,10 @@ def main():
     tb.init_datastore_v3_stub(datastore_file='local.data', save_changes=True) # Next, declare which service stubs you want to use.
     tb.init_memcache_stub()
     tb.init_user_stub()    
-    app.local = True    
+    tb.init_taskqueue_stub()
+    tb.init_urlfetch_stub()
+    tb.init_images_stub() # only for dev_appserver; use
+    
     httpd = make_server('127.0.0.1', 8080, app)
     httpd.serve_forever()    
 
@@ -19,4 +23,8 @@ def main():
 
 if __name__ == '__main__':
     # Respond to requests until process is killed        
-    autoreload.main(main)
+    if '-nr' in sys.argv:
+        main()
+    else:
+        autoreload.main(main)
+    

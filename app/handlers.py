@@ -9,6 +9,8 @@ from base64 import b64decode, b64encode
 from google.appengine.ext import deferred
 from util import update_pages, update_pages_deffered
 from models import Page
+from google.appengine.api import memcache
+
 
 
 class BaseHandler(webapp2.RequestHandler):
@@ -32,7 +34,7 @@ class BaseHandler(webapp2.RequestHandler):
             else:
                 self.user = user = users.get_current_user()
                 is_admin = users.is_current_user_admin()                
-            can_edit = is_admin or (user is not None and (user.email() in Var.get_value('admins')))            
+            can_edit = is_admin or (user is not None and (user.email()==Var.get_value('admin')))            
             logging.debug('current_user: admin=%s can_edit=%s', users.is_current_user_admin(), can_edit)            
             if not can_edit:
                 if self.request.method=='POST':                                        
@@ -78,8 +80,13 @@ class BaseHandler(webapp2.RequestHandler):
             self.flash = None        
         
     def post_dispatch_flash(self, resp):
-        if self.new_flash is None and resp.status_int==200:
-            resp.delete_cookie('flash')
+        if self.new_flash is None:
+            if resp.status_int==200:
+                # jesli strona 200 i nie ma nowego flash - to skasuj stary
+                resp.delete_cookie('flash')
+            else:
+                # jesli np. przekierowanie to nie kasuje starego ciasteczka
+                pass            
         else:          
             assert self.new_flash
             resp.set_cookie('flash', b64encode(self.new_flash.encode('utf8')))
@@ -99,6 +106,10 @@ class BaseHandler(webapp2.RequestHandler):
                                 
         # super
         resp = super(BaseHandler, self).dispatch()
+        
+        ### helper if resp is string
+        if isinstance(resp, basestring):
+            resp = webapp2.Response(resp)
         
         # after
         resp = self.post_dispatch_lang(resp)
@@ -146,11 +157,16 @@ class AdminHandler(BaseHandler):
         return self.redirect_to('vars')
     
     def update_pages(self):        
-        from admin import debug
-        if debug:
+        if self.app.debug or self.app.local:
             logging.info('debugmode:calling: update_pages')
-            update_pages()
-            name,url='test'
+            from gdata.client import BadAuthentication
+            try:
+                update_pages()
+            except BadAuthentication, e:
+                self.set_flash('Problem z update_pages(): %r.'%e)
+                return self.redirect_to('pages')
+            
+            name, url = 'test',''
         else:
             logging.info('deffering "update_pages" task...')            
             task = deferred.defer(update_pages_deffered)
@@ -160,7 +176,25 @@ class AdminHandler(BaseHandler):
             
         self.set_flash('Zadanie "%s" at url="%s" zakolejkowane.'%(name, url))
         return self.redirect_to('pages')
-                    
+                
+    def update_page(self, res_id):
+        page = Page.get_by_res_id(res_id)
+        page.update_content()
+        self.set_flash(u'Treść zakutalizowana (wielość=%s)'%len(page.content))
+        return self.redirect_to('pages')
+    
+    def refresh_page(self, slug):
+        from util import render_page_content
+        content = render_page_content(slug, self.lang)
+        if content is None:
+            self.abort(404)            
+        else:
+            ok = memcache.set("%s@%s"%(slug, self.lang), content)  #@UndefinedVariable
+            if ok:
+                return self.redirect('/%s'%slug)
+            else:
+                self.abort(400)
+                
     def pages(self):        
         return self.render('admin/pages.html', pages=Page.all())
 
@@ -178,6 +212,12 @@ class HomeHandler(BaseHandler):
         r = self.render('home.html')
         return r
         
-    
+class DynamicHandler(BaseHandler):
+    def get(self, slug):
+        from util import render_page_content        
+        content = render_page_content(slug, self.lang)
+        if content is None:
+            self.abort(404)
+        else:
+            return content
         
-

@@ -11,7 +11,12 @@ Akcje:
 <h2>Pages:</h2>
 <ul>
 {% for page in pages %}
-    <li><b>{{page.slug}}</b>/{{page.lang}}: "{{ page.title }}" </li>
+    <li><b>{{page.slug}}</b>/{{page.lang}}: "{{ page.title }}" 
+      <ul>
+        <li> <a href="{{uri_for('update_page', res_id=page.res_id) }}">aktualizuj treść</a> </li>
+        <li> <a href="{{uri_for('refresh_page', slug=page.slug) }}">odśwież memcache</a> </li>
+      </ul>
+    </li> 
 {% endfor %}
 </ul>
 <hr>

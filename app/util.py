@@ -18,14 +18,21 @@ def direct_render(template_name, **ctx):
         return render_to_response(template_name, **ctx)
     return _direct_render
 
-
-   
 def get_doc_content(src):
     """ src - src url """
     from google.appengine.api.urlfetch import fetch, Error
-    response = fetch(src, deadline  =10)
+    response = fetch(src, deadline=10)
     assert response.status_code == 200
+    if 'Welcome to Google Docs' in response.content or 'gaia_loginbox' in response.content or "Don't have a Google Account?" in response.content:
+        raise Exception(u'brak uprawnien do pobrania zawartosci strony z %s (czyzby nie byla udostepniona?)'%src)
     return response.content   
+
+def render_page_content(slug, lang):
+    """ zwraca wygenerowana content z podanej strony """
+    page = Page.get_by_slug(slug, 'pl')        
+    if page is None:
+        return None
+    return render_template('base.html', content=page.content, title=page.title).encode('utf8')
      
 def update_pages():
     logging.info('-> updateing pages')
@@ -37,13 +44,15 @@ def update_pages():
     updated_cnt = deleted_cnt = created_cnt = 0  
     # updateing
     for page in Page.all():
+        
         # delete
-        if not page.key().name() in docs_by_keys:
-            logging.info('page %s deleted'%doc['res_id'])
+        if not page.res_id in docs_by_keys:
+            logging.info('page %s deleted'%page.res_id)
             page.delete()
             deleted_cnt+=1
 
         else:        
+            doc = docs_by_keys[page.res_id]
             # update existing
             page.slug = doc['slug']
             page.lang = doc['lang']
@@ -51,13 +60,13 @@ def update_pages():
             page.etag = doc['etag']
             page.updated = doc['updated']
             page.content = get_doc_content(doc['src'])
+            page.src = doc['src']
             page.put()            
             logging.info('page %s updated'%doc['res_id'])            
             updated_or_deleted.add( page.key().name() )
             updated_cnt+=1
         
-        
-    
+    # new pages
     new_pages_ids = set(docs_by_keys) - updated_or_deleted
     for new_page_id in new_pages_ids:
         doc = docs_by_keys[new_page_id]
@@ -68,6 +77,7 @@ def update_pages():
             title = doc['title'],
             etag = doc['etag'],
             updated = doc['updated'],
+            src = doc['src'],
             content = get_doc_content(doc['src']),
         )
         page.put()        
