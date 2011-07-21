@@ -180,20 +180,19 @@ class AdminHandler(BaseHandler):
     def update_page(self, res_id):
         page = Page.get_by_res_id(res_id)
         page.update_content()
-        self.set_flash(u'Treść zakutalizowana (wielość=%s)'%len(page.content))
+        self.set_flash(u'Treść zakutalizowana i cache odświeżony.')
         return self.redirect_to('pages')
     
     def refresh_page(self, slug):
-        from util import render_page_content
-        content = render_page_content(slug, self.lang)
-        if content is None:
-            self.abort(404)            
+        """ wywolywane do odswiezenia strony przy braku w cache """
+        page = Page.get_by_slug(slug, self.lang)
+        if page is None:
+            self.abort(404)
+        ok = page.update_cache()             
+        if ok:
+            return self.redirect('/%s'%slug)
         else:
-            ok = memcache.set("%s@%s"%(slug, self.lang), content)  #@UndefinedVariable
-            if ok:
-                return self.redirect('/%s'%slug)
-            else:
-                self.abort(400)
+            self.abort(400)
                 
     def pages(self):        
         return self.render('admin/pages.html', pages=Page.all())
@@ -214,10 +213,11 @@ class HomeHandler(BaseHandler):
         
 class DynamicHandler(BaseHandler):
     def get(self, slug):
-        from util import render_page_content        
-        content = render_page_content(slug, self.lang)
-        if content is None:
+        page = Page.get_by_slug(slug, self.lang)       
+        if page is None:
             self.abort(404)
-        else:
-            return content
+        content = page.render_content()
+        if not content:
+            self.abort(404)
+        return content
         

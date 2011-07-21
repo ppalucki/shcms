@@ -6,7 +6,7 @@ import yaml
 import logging
 import settings
 import webapp2
-
+from pytz.gae import pytz #@UnresolvedImport
 
 
 class Page(db.Model):
@@ -20,7 +20,15 @@ class Page(db.Model):
     content     = db.TextProperty(required=True)
     etag        = db.StringProperty(required=True)
     updated     = db.DateTimeProperty(required=True)
+    edit_url    = db.TextProperty()
     src         = db.TextProperty()
+
+    @property
+    def res_id(self):
+        return self.key().name()
+
+    def __repr__(self):
+        return u'<Page %s@%s>'%(self.slug, self.lang)
 
     @classmethod
     def get_by_slug(cls, slug, lang):
@@ -29,18 +37,27 @@ class Page(db.Model):
     @classmethod
     def get_by_res_id(cls, res_id):
         return cls.get_by_key_name(res_id)
-        
-    def __repr__(self):
-        return u'<Page %s@%s>'%(self.slug, self.lang)
     
     def update_content(self):
         from util import get_doc_content
         self.content = get_doc_content(self.src)
         self.put()
         
+    def render_content(self):
+        from util import render_template
+        return render_template('base.html', content=self.content, title=self.title)
+    
+    def update_cache(self):
+        content = self.render_content()
+        if not content:
+            return
+        return memcache.set("%s@%s"%(self.slug, self.lang), content.encode('utf8'))  #@UndefinedVariable        
+
     @property
-    def res_id(self):
-        return self.key().name()
+    def updated_local(self):
+        mytz = pytz.timezone('Europe/Warsaw') 
+        return pytz.utc.localize(self.updated).astimezone(mytz)
+        
 
 class Album(db.Model):
     name        = db.StringProperty(verbose_name=u'slug', required=True)

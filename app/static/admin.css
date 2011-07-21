@@ -1,0 +1,95 @@
+body {
+  border-style: solid;
+  border-width: 1px;
+  background-color: #cccccc;
+  width: 1024px;
+}
+
+#panel {
+  background-color: white;
+  padding: 5px;
+}
+
+a {
+  color: red;
+}
+
+#logout {
+  margin: 0px 10px;
+  float: right;
+  background-color: #efeefe;
+  padding: 2px;
+  border-style: solid;
+  border-width: thin;
+  border-color: black;
+  /*border-radius: 5px; */
+  width: 70px;
+  text-decoration: none;
+  text-align: center;
+  
+}
+
+#breadcrumb {
+  background-color: #eed0ee;
+}
+
+#flash {
+  background-color: #d0eeee;
+  position: fixed;
+  padding: 8px;
+  top: 5px;
+  left: 200px;  
+  border-style: solid;
+  border-width: thin;
+ 
+  
+}
+
+#footer {
+  background-color: #d0eeff;
+}
+
+.pages_action a {
+  border-style: solid;
+  border-width: thin;
+  border-color: black;
+  /*border-radius: 5px; */
+  padding: 2px;  
+  text-decoration: none;
+  background-color: #efeefe;
+}
+
+.page_title {
+  font-style: italic;
+  
+}
+.page_updated {
+  font-size: small;
+}
+
+.page_actions li {
+  display: inline;
+}
+
+ul.page_actions {
+  display: inline;
+  float: right;
+}
+
+.page_actions a {
+  border-style: solid;
+  border-width: thin;
+  border-color: black;
+  /*border-radius: 5px; */
+  padding: 2px;  
+  text-decoration: none;
+  background-color: #efeefe;
+}
+
+li {
+  list-style-type: none;
+}
+
+li.page {
+  margin: 12px 0; 
+}

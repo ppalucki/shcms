@@ -27,13 +27,8 @@ def get_doc_content(src):
         raise Exception(u'brak uprawnien do pobrania zawartosci strony z %s (czyzby nie byla udostepniona?)'%src)
     return response.content   
 
-def render_page_content(slug, lang):
-    """ zwraca wygenerowana content z podanej strony """
-    page = Page.get_by_slug(slug, 'pl')        
-    if page is None:
-        return None
-    return render_template('base.html', content=page.content, title=page.title).encode('utf8')
-     
+
+        
 def update_pages():
     logging.info('-> updateing pages')
     docs = get_docs_data(Var.get_value('admin'),Var.get_value('password'))
@@ -61,6 +56,7 @@ def update_pages():
             page.updated = doc['updated']
             page.content = get_doc_content(doc['src'])
             page.src = doc['src']
+            page.edit_url = doc['edit_url']
             page.put()            
             logging.info('page %s updated'%doc['res_id'])            
             updated_or_deleted.add( page.key().name() )
@@ -78,6 +74,7 @@ def update_pages():
             etag = doc['etag'],
             updated = doc['updated'],
             src = doc['src'],
+            edit_url = doc['edit_url'],
             content = get_doc_content(doc['src']),
         )
         page.put()        

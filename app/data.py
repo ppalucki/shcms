@@ -41,8 +41,9 @@ def get_docs_data(login, password):
             doctype = entry.GetDocumentType(),
             parents = [link.title for link in entry.in_folders()],
             src = entry.content.src,
-            etag = entry.etag
-        )
+            etag = entry.etag,
+            edit_url = entry.find_alternate_link(),
+        )        
         logging.info('loaded entry: %s', d['res_id'])
         
         if d['doctype']=='folder':

@@ -1,6 +1,5 @@
 {% extends "admin/base.html" %}
-{% block bc %}{{ super() }}&nbsp; -> Vars{% endblock %}
-
+{% block breadcrumb %}{{super()}}/Vars{% endblock %}
 {% block content %}
 <hr>
 {% for form,var in forms_and_vars %}

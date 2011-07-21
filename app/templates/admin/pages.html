@@ -1,23 +1,33 @@
 {% extends "admin/base.html" %}
-{% block bc %}{{ super() }}&nbsp; ->  Pages{% endblock %}
+{% block bc %}{{super()}}/Pages{% endblock %}
 {% block content %}
 
-Akcje:
-<ul>
-  <li><a href="{{uri_for('update_pages')}}">Aktualizuj strony</a></li> 
-</ul>
+<div class="outer_actions" >    
+    <ul class="pages_action">
+      <li><a href="{{uri_for('update_pages')}}">Aktualizuj strony</a></li> 
+    </ul>
+</div>
+
 
 <hr>
-<h2>Pages:</h2>
-<ul>
-{% for page in pages %}
-    <li><b>{{page.slug}}</b>/{{page.lang}}: "{{ page.title }}" 
-      <ul>
-        <li> <a href="{{uri_for('update_page', res_id=page.res_id) }}">aktualizuj treść</a> </li>
-        <li> <a href="{{uri_for('refresh_page', slug=page.slug) }}">odśwież memcache</a> </li>
-      </ul>
-    </li> 
-{% endfor %}
-</ul>
+<div class="pages_list">
+    <h2>Pages:</h2>
+    <ul>
+    {% for page in pages %}
+        <li class="page">
+              <b>/{{page.slug}}</b>@{{page.lang}} 
+              <span class="page_title">"{{ page.title }}"</span>
+              <span class="page_updated">{{ page.updated_local }}</span>
+              
+              <ul class="page_actions">                 
+                <li class="page_action"> <a href="{{page.edit_url}}" target="_blank" >edit</a> </li>
+                <li class="page_action"> <a href="{{uri_for('update_page', res_id=page.res_id) }}">update page</a> </li>                
+                <li class="page_action"> <a href="/d/{{page.slug}}" target="_blank">dynamic</a> </li>                
+                <li class="page_action"> <a href="/{{page.slug}}" target="_blank">static</a> </li>            
+              </ul>
+        </li> 
+    {% endfor %}
+    </ul>
+</div>
 <hr>
 {% endblock %}

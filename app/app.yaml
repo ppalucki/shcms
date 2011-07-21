@@ -38,6 +38,6 @@ handlers:
   script: admin.py
   
 - url: /.*
-  script: home.py
+  script: start.py
 
   
