@@ -22,7 +22,8 @@
               <ul class="page_actions">                 
                 <li class="page_action"> <a href="{{page.edit_url}}" target="_blank" >edit</a> </li>
                 <li class="page_action"> <a href="{{uri_for('update_page', res_id=page.res_id) }}">update page</a> </li>                
-                <li class="page_action"> <a href="/d/{{page.slug}}" target="_blank">dynamic</a> </li>                
+                <li class="page_action"> <a href="/d/{{page.slug}}" target="_blank">dynamic</a> </li>         
+                <li class="page_action"> <a href="/rp/{{page.slug}}" target="_blank">refresh cache</a> </li>                       
                 <li class="page_action"> <a href="/{{page.slug}}" target="_blank">static</a> </li>            
               </ul>
         </li> 
