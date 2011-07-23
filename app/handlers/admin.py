@@ -20,8 +20,8 @@ class AdminHandler(BaseHandler):
         uri = self.uri_for('pages')+'?'+self.request.query
         return self.redirect(uri)        
 
-    def index(self):
-        return self.render('admin/index.html')
+    def admin(self):
+        return self.render('admin/admin.html')
 
     def vars(self):
         if self.request.method=='POST':
@@ -78,7 +78,7 @@ class AdminHandler(BaseHandler):
                 cnt+=1
             
         self.set_flash(u'Odświeżono w cache %s stron.'%cnt)
-        return self._redirect_to_pages()
+        return self.redirect_to('admin')
                 
     def update_page(self, slug, lang):        
         page = Page.get_by(slug, lang)

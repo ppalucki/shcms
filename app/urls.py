@@ -4,7 +4,7 @@ from handlers import admin, static, dynamic
 
 urls = [    
     # admin
-    Route(r'/admin', admin.AdminHandler, handler_method='index', name='admin'),
+    Route(r'/admin', admin.AdminHandler, handler_method='admin', name='admin'),
     Route(r'/admin/vars', admin.AdminHandler, handler_method='vars', name='vars'),
     Route(r'/admin/update_vars', admin.AdminHandler, handler_method='update_vars', name='update_vars'),
     Route(r'/admin/pages', admin.AdminHandler, handler_method='pages', name='pages'),

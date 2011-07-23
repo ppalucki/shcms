@@ -116,13 +116,18 @@ img.flag {
   border-top-width: 1px;
 }
 
-#index_actions li {
+#admin_actions li {
   padding: 8px;
 }
 
-ul#index_actions {
+ul#admin_actions {
   margin-bottom: 30px;
 }
+
+a.admin_action {
+  width: 200px;
+}
+
 
 div.outer_actions {
   padding-bottom: 15px;
