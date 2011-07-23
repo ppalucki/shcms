@@ -13,7 +13,7 @@
                     <img id="logo" src="/static/logo-text.jpg" />
                 </a>                    
                 {% for lang in langs %}    
-                    <a class="flag" href="{{url_for_page('dynamic_page', page, lang)}}">
+                    <a class="flag" href="{{url_for_page(link_type, page, lang)}}">
                         {{lang_img(lang, 'small.png', current=(page.lang==lang))|safe}}
                     </a>                                     
                 {% endfor %}
@@ -22,7 +22,7 @@
             <div id="navigation">
                 <ul>
                     {% for page in pages %}
-                        <li {% if page.current %}id="current_page"{% endif %}><a href="{{url_for_page('dynamic_page',page)}}">{{page.title}}</a></li>
+                        <li {% if page.current %}id="current_page"{% endif %}><a href="{{url_for_page(link_type, page)}}">{{page.title}}</a></li>
                     {% endfor %}
                 </ul>
             </div>

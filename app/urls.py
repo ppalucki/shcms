@@ -9,6 +9,7 @@ urls = [
     Route(r'/admin/update_vars', admin.AdminHandler, handler_method='update_vars', name='update_vars'),
     Route(r'/admin/pages', admin.AdminHandler, handler_method='pages', name='pages'),
     Route(r'/admin/update_pages', admin.AdminHandler, handler_method='update_pages', name='update_pages'),
+    Route(r'/admin/cache_pages', admin.AdminHandler, handler_method='cache_pages', name='cache_pages'),
     Route(r'/admin/update_page/<slug>-<lang>', admin.AdminHandler, handler_method='update_page', name='update_page'),
     Route(r'/admin/edit_page/<slug>-<lang>', admin.AdminHandler, handler_method='edit_page', name='edit_page'),
 

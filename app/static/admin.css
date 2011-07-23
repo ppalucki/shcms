@@ -3,12 +3,24 @@ body {
   /* width: 1024px; */
 }
 
+li {
+  list-style-type: none;
+}
+
+a {
+  color: red;
+}
+
+
+/* ------------------ flags ------------ */
+
 img.flag {
   border-width: 1px;
   border-style: solid;
   margin-left: 5px;
 }
 
+/* -------------- sections ------------ */
 #wrapper {
   border-style: solid;
   border-width: 1px;
@@ -21,10 +33,6 @@ img.flag {
 #header{
   height: 50px;
   background-color: gray;
-}
-
-a {
-  color: red;
 }
 
 #logout {
@@ -48,14 +56,13 @@ a {
 
 #flash {
   background-color: #d0eeee;
-  position: fixed;
   padding: 8px;
   top: 5px;
-  left: 200px;  
+  width: 400px;
+  margin: 0 auto;  
   border-style: solid;
   border-width: thin;
- 
-  
+  margin-bottom: 5px;
 }
 
 #footer {
@@ -63,7 +70,8 @@ a {
   clear: both;
 }
 
-.pages_action a {
+/* ---------------- pages actions ------------------- */
+.pages_actions a {
   border-style: solid;
   border-width: thin;
   border-color: black;
@@ -75,13 +83,11 @@ a {
 
 }
 
-.page_title {
-  font-style: italic;
-  
+.pages_actions li {
+  display: inline;
 }
-.page_updated {
-  font-size: small;
-}
+
+/* ---------------- page actions ------------------- */
 
 .page_actions li {
   display: inline;
@@ -100,12 +106,23 @@ ul.page_actions {
   padding: 2px;  
   text-decoration: none;
   background-color: #efeefe;
+  
 }
 
-li {
-  list-style-type: none;
+/* ---------------- page list --------------------*/
+
+.page_title {
+  font-style: italic;
+}
+
+.page_updated {
+  font-size: small;
 }
 
 li.page {
   margin: 12px 0; 
 }
+
+
+
+

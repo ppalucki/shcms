@@ -55,6 +55,7 @@ class Page(db.Model):
         
     def render_content(self):
         from util import render_template
+        from app import app
         langs = reversed( Var.get_value('langs') )
         pages = list( Page.all().filter('lang =', self.lang).order('slug') )
         
@@ -67,6 +68,7 @@ class Page(db.Model):
                                pages=pages,
                                langs=langs,
                                page=self,
+                               link_type='dynamic_page' if app.debug else 'static_page'
                                )
     
     def update_cache(self):

@@ -64,6 +64,16 @@ class AdminHandler(BaseHandler):
             
         self.set_flash('Zadanie "%s" at url="%s" zakolejkowane.'%(name, url))
         return self.redirect_to('pages')
+
+    def cache_pages(self):
+        cnt = 0        
+        for page in Page.all():
+            ok, _ = page.update_cache()
+            if ok:
+                cnt+=1
+            
+        self.set_flash(u'Odświeżono w cache %s stron.'%cnt)
+        return self.redirect_to('pages')
                 
     def update_page(self, slug, lang):
         page = Page.get_by(slug, lang)
