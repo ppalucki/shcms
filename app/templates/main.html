@@ -1,0 +1,41 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+    <head>
+        <link rel="stylesheet" type="text/css" href="/static/main.css" />
+        <title>{{ title or Var.get_value('title') }}</title>
+    </head>
+    
+    <body>       
+        <div id="wrapper">
+            
+            <div id="header">
+                <a class="logo" href="/dp/home-{{page.lang}}">
+                    <img id="logo" src="/static/logo-text.jpg" />
+                </a>                    
+                {% for lang in langs %}    
+                    <a class="flag" href="{{url_for_page('dynamic_page', page, lang)}}">
+                        {{lang_img(lang, 'small.png', current=(page.lang==lang))|safe}}
+                    </a>                                     
+                {% endfor %}
+            </div> 
+            
+            <div id="navigation">
+                <ul>
+                    {% for page in pages %}
+                        <li {% if page.current %}id="current_page"{% endif %}><a href="{{url_for_page('dynamic_page',page)}}">{{page.title}}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <div id="content">
+                {# {{content|safe}} #}
+                {{ lipsum() }}
+            </div>
+
+            <div id="footer">
+                &copy; Copyright 2011 by Paweł Pałucki.
+                <p>The Page Footer Goes Here</p>
+            </div>
+        </div>
+    </body>    
+</html>

@@ -1,0 +1,105 @@
+/* ----------------- layout (body/wrapper) ---------------- */
+
+body {
+  background-color: #cccccc;
+}
+
+p {
+  margin: 0;
+}
+
+#wrapper {
+  border-style: solid;
+  border-width: 1px;
+  background-color: silver;
+  padding: 0px;
+  width: 1000px;
+  height: 800px;
+  margin: 0 auto;
+}
+
+/* ----------------- header ---------------- */
+#header{
+  height: 150px;
+  background-color: red;
+}
+
+img#logo {
+  border-width: 3px;
+  border-style: solid;
+  border-color: #7d6b72;
+}
+
+/* flags */
+a.flag {
+  float: right;
+  margin: 1px 2px;
+  padding: 0;
+  border-width: 0;
+}
+
+img.flag {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #2F4F4F;  
+  height: 13px;
+  width: 25px;
+}
+
+img.current_flag {
+  border-width: 2px; 
+  border-color: black;  
+}
+
+/* ----------------- navigation ---------------- */
+div#navigation {
+  background: yellow;
+  width: 200px;
+  float: left;
+  text-align: center;  
+  padding: 0;
+  margin: 0;
+  height: 500px;
+}
+
+#navigation ul {
+  margin-top: 50px;
+  padding: 0; 
+}
+
+#navigation a {
+  color: red;
+  text-decoration: none;
+}
+
+#navigation li {
+  list-style-type: none;
+  font-size: 22px;
+  margin-bottom: 10px;
+}
+
+li#current_page {
+  font-weight: bolder;
+  
+}
+
+
+
+/* ----------------- content ---------------- */
+#content {
+  padding: 0;
+  margin: 0;  
+  background: teal;
+  width: 800px;
+  margin-left: 200px;
+  height: 500px;
+  overflow-y: auto;
+}
+
+
+/* ----------------- footer ---------------- */
+div#footer {
+  background: #800000;
+  clear: both;
+  height: 150px;
+}

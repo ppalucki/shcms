@@ -26,6 +26,8 @@ class VarForm(Form):
         if type(new_value) != type(old_value):
             raise ValidationError(u'zły typ - oczekiwano=%r a dostałem=%r'%(
                                         type(old_value), type(new_value)))
+            
+
  
         
         

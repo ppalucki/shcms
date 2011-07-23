@@ -4,6 +4,7 @@ from google.appengine.api import memcache
 from handlers.base import BaseHandler
 import os, mimetypes
 import webapp2
+import logging
 
 
 class StartHandler(BaseHandler):     
@@ -33,6 +34,7 @@ class StartHandler(BaseHandler):
         assert self.app.local, 'powinno dzialac tylko przy local server!'
         file_path = os.path.join('static', path)
         if not os.path.exists(file_path):
+            logging.warn('"%s" not found'%file_path)
             self.abort(404)
         fp = open(file_path, 'rb')
         mime_type = mimetypes.guess_type(file_path)[0]

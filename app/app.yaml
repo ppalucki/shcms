@@ -38,6 +38,6 @@ handlers:
   script: app.py
   
 - url: /.*
-  script: static_app.py
+  script: main.py
 
   

@@ -6,8 +6,17 @@ import string
 import settings
 from models import Var
 
-def uri_for_page(name, page):
-    return webapp2.uri_for(name, slug=page.slug, lang=page.lang)
+def url_for_page(name, page, lang=None):
+    return webapp2.uri_for(name, slug=page.slug, lang=lang or page.lang)
+
+def url_for_flag(lang, type):
+    return '/static/flags/%s/%s'%(lang,type)
+
+def lang_img(lang, type='small.png', current=False):
+    return '<img class="flag%s" src="%s" alt="%s" />'%((' current_flag' if current else ''),url_for_flag(lang, type), lang)
+
+def lang_link(lang, href, type='small.png', current=False):
+    return '<a class="flag" href="%s">%s</a>'%( href, lang_img(lang, type, current)) 
 
 jinja2.default_config.update(
     globals=dict(
@@ -17,8 +26,10 @@ jinja2.default_config.update(
         uri_for = webapp2.uri_for,
         settings = settings,
         Var = Var,
-        uri_for_page = uri_for_page,
-        
+        url_for_page = url_for_page,
+        url_for_flag = url_for_flag,
+        lang_img = lang_img,
+        lang_link = lang_link        
     ),
     filters=dict(
         lower = string.lower,

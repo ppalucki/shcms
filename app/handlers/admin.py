@@ -11,6 +11,7 @@ from util import update_pages, update_pages_deffered
 from models import Page
 from google.appengine.api import memcache
 from handlers.base import BaseHandler
+import yaml
 
 
 class AdminHandler(BaseHandler):
@@ -25,8 +26,9 @@ class AdminHandler(BaseHandler):
             for var in Var.all():
                 if name == var.name:
                     form = VarForm(self.request.POST, obj=var) 
-                    if form.validate():                        
-                        Var.set_value(var.name, form.data['raw'])                        
+                    if form.validate():
+                        new_value = yaml.load(form.data['raw'])
+                        Var.set_value(var.name, new_value)                        
                         self.set_flash(u'Zmienna "%s" zapisana.'%var.desc)
                         return self.redirect_to('vars')
                 else:
@@ -72,7 +74,7 @@ class AdminHandler(BaseHandler):
 
                 
     def pages(self):                
-        return self.render('admin/pages.html', pages=Page.gql('ORDER BY slug,lang'))
+        return self.render('admin/pages.html', pages=Page.all().order('slug').order('lang'))
     
     def edit_page(self, slug, lang):
         page = Page.get_by(slug, lang) 

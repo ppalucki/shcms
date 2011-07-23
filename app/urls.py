@@ -19,7 +19,7 @@ urls = [
     # static (Local)  
     Route(r'/<slug>-<lang>', static.StartHandler, handler_method='static_page', name='static_page'),
     Route(r'/', static.StartHandler, handler_method='home_page', name='home_page'),
-    Route(r'/static/<path>', static.StartHandler, handler_method='static', name='static'),
+    Route(r'/static/<path:.*>', static.StartHandler, handler_method='static', name='static'),
     Route(r'/favicon.ico', static.StartHandler, handler_method='favicon'),
     
 ]

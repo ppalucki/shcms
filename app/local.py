@@ -4,7 +4,9 @@ from app import app
 from django.utils import autoreload #@UnresolvedImport
 import sys
 
-def main():    
+def main():   
+    import logging
+    logging.basicConfig(level=logging.DEBUG) 
     from wsgiref.simple_server import make_server
     tb = testbed.Testbed()
     tb.activate()

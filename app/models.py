@@ -24,8 +24,22 @@ class Page(db.Model):
     src         = db.TextProperty()
 
     @property
+    def lang_icon_small_url(self):
+        return '/static/flags/%s/small.png'%self.lang
+
+    @property
+    def lang_icon_anim_url(self):
+        return '/static/flags/%s/anim.gif'%self.lang
+
+    @property
+    def lang_icon_big_url(self):
+        return '/static/flags/%s/big.gif'%self.lang
+
+    @property
     def res_id(self):
         return self.key().name()
+
+
 
     def __repr__(self):
         return u'<Page %s@%s>'%(self.slug, self.lang)
@@ -41,7 +55,19 @@ class Page(db.Model):
         
     def render_content(self):
         from util import render_template
-        return render_template('base.html', content=self.content, title=self.title)
+        langs = reversed( Var.get_value('langs') )
+        pages = list( Page.all().filter('lang =', self.lang).order('slug') )
+        
+        for page in pages:
+            page.current = (page.key()==self.key())
+        
+        return render_template('main.html', 
+                               content=self.content, 
+                               title=self.title,
+                               pages=pages,
+                               langs=langs,
+                               page=self,
+                               )
     
     def update_cache(self):
         content = self.render_content()
@@ -115,16 +141,16 @@ class Var(db.Model):
         return value
     
     @classmethod
-    def set_value(cls, name, value):
+    def set_value(cls, name, new_value):
         var = Var.get_by_key_name(name)
         assert var is not None, 'var=%s not found'%name
-        expected_type = yaml.load(var.raw)
-        if type(value) != type(expected_type):
-            raise ValueError('expected type=%s but got=%s'%(expected_type, type(value)))
-        var.raw = yaml.dump(value)
+        old_value = yaml.load(var.raw)
+        if type(new_value) != type(old_value):
+            raise ValueError('expected type=%s but got=%s'%(type(old_value), type(new_value)))
+        var.raw = yaml.dump(new_value)
         var.put() 
         
-        assert memcache.set('Var-%s'%name, value) #@UndefinedVariable
+        assert memcache.set('Var-%s'%name, new_value) #@UndefinedVariable
     
     def __repr__(self):
         return u'<Var(%s:%r)>'%(self.name, self.value)
