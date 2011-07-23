@@ -4,9 +4,9 @@ from google.appengine.ext import deferred
 from helpers import render_template
 from models import Page, Album, Photo, Var
 import logging
-import webapp2
 
-def render_to_response(template_name, **ctx):    
+def render_to_response(template_name, **ctx):
+    import webapp2    
     return webapp2.Response(
                 render_template(template_name, **ctx)
             )
