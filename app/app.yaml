@@ -31,12 +31,15 @@ handlers:
 - url: /admin.*
   script: app.py
   
-- url: /d.*
+- url: /dc.*
   script: app.py
-
+- url: /dp.*
+  script: app.py
+- url: /rc.*
+  script: app.py
 - url: /rp.*
   script: app.py
-  
+
 - url: /.*
   script: main.py
 

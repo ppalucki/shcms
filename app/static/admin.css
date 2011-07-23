@@ -4,6 +4,13 @@ body {
 
 }
 
+iframe {
+  width: 1000px;
+  height: 800px;
+  overflow: auto;
+  border: solid 1px;
+}
+
 ul, li {
   list-style-type:none;
   padding: 0;
@@ -51,7 +58,7 @@ img.flag {
   border-width: 1px;
   background-color: white;
   padding: 5px;
-  width: 900px;
+  width: 1050px;
   margin: 0 auto;
 }
 

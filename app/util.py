@@ -27,7 +27,18 @@ def get_doc_content(src):
         raise Exception(u'brak uprawnien do pobrania zawartosci strony z %s (czyzby nie byla udostepniona?)'%src)
     return response.content   
 
-
+def fix_content(src):
+    import BeautifulSoup
+    bs = BeautifulSoup.BeautifulSoup(src)
+    style = bs.head.style
+    style.setString( style.text.replace('body','#body') )
+    styles = style.prettify()
+    # body as span
+    body = bs.body
+    body.name = 'span'
+    body['id']='body'
+    span = body.prettify()
+    return span, styles
         
 def update_pages():
     logging.info('-> updateing pages')

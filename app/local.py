@@ -2,12 +2,12 @@
 from google.appengine.ext import testbed
 from app import app
 from django.utils import autoreload #@UnresolvedImport
-import sys
+import sys, traceback
 
 def main():   
     import logging
     logging.basicConfig(level=logging.DEBUG) 
-    from wsgiref.simple_server import make_server
+    
     tb = testbed.Testbed()
     tb.activate()
     tb.init_datastore_v3_stub(datastore_file='local.data', save_changes=True) # Next, declare which service stubs you want to use.
@@ -17,6 +17,7 @@ def main():
     tb.init_urlfetch_stub()
     tb.init_images_stub() # only for dev_appserver; use
     
+    from wsgiref.simple_server import make_server
     httpd = make_server('127.0.0.1', 8080, app)
     httpd.serve_forever()    
 

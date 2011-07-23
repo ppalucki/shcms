@@ -1,21 +1,23 @@
 /* ----------------- layout (body/wrapper) ---------------- */
-
 body {
-  background-color: #cccccc;
-}
-
-p {
-  margin: 0;
+  background-color: #FFFF99;
 }
 
 #wrapper {
   border-style: solid;
   border-width: 1px;
-  background-color: silver;
-  padding: 0px;
+  background-color: #CCCC99;
   width: 1000px;
   height: 800px;
   margin: 0 auto;
+}
+
+iframe {
+  width: 800px;
+  border-style: none;
+  border-width: 0;
+  overflow: hidden;
+  height: 700px;
 }
 
 /* ----------------- header ---------------- */
@@ -59,7 +61,7 @@ div#navigation {
   text-align: center;  
   padding: 0;
   margin: 0;
-  height: 500px;
+  height: 600px;
 }
 
 #navigation ul {
@@ -79,23 +81,17 @@ div#navigation {
 }
 
 li#current_page {
-  font-weight: bolder;
-  
+  font-weight: bolder; 
 }
-
 
 
 /* ----------------- content ---------------- */
 #content {
-  padding: 0;
-  margin: 0;  
-  background: teal;
   width: 800px;
   margin-left: 200px;
-  height: 500px;
   overflow-y: auto;
+  
 }
-
 
 /* ----------------- footer ---------------- */
 div#footer {

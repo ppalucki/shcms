@@ -53,8 +53,8 @@ class Page(db.Model):
         self.content = get_doc_content(self.src)
         self.put()
         
-    def render_content(self):
-        from util import render_template
+    def render_content(self, dynamic=False):
+        from util import render_template, fix_content
         from app import app
         langs = reversed( Var.get_value('langs') )
         pages = list( Page.all().filter('lang =', self.lang).order('slug') )
@@ -62,20 +62,28 @@ class Page(db.Model):
         for page in pages:
             page.current = (page.key()==self.key())
         
+#        span,styles = fix_content(self.content)
+        
         return render_template('main.html', 
-                               content=self.content, 
+#                               content=span,
+#                               styles=styles, 
                                title=self.title,
                                pages=pages,
                                langs=langs,
                                page=self,
-                               link_type='dynamic_page' if app.debug else 'static_page'
+                               link_type='dynamic_page' if dynamic else 'static_page',
+                               content_link_type='dynamic_content' if dynamic else 'static_content'
                                )
     
-    def update_cache(self):
+    def update_cache(self):        
         content = self.render_content()
         if not content:
             return
         return memcache.set("%s-%s"%(self.slug, self.lang), content.encode('utf8')), content  #@UndefinedVariable        
+
+    def update_cache_content(self):        
+        return memcache.set("content-%s-%s"%(self.slug, self.lang), self.content.encode('utf8')) #@UndefinedVariable
+
 
     @property
     def updated_local(self):

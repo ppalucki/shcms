@@ -69,11 +69,12 @@ class AdminHandler(BaseHandler):
         self.set_flash('Zadanie "%s" at url="%s" zakolejkowane.'%(name, url))
         return self._redirect_to_pages()
 
-    def cache_pages(self):
+    def update_cache(self):
         cnt = 0        
         for page in Page.all():
             ok, _ = page.update_cache()
-            if ok:
+            ok2 = page.update_cache_content()
+            if ok and ok2:
                 cnt+=1
             
         self.set_flash(u'Odświeżono w cache %s stron.'%cnt)
@@ -105,3 +106,4 @@ class AdminHandler(BaseHandler):
     def edit_page(self, slug, lang):
         page = Page.get_by(slug, lang) 
         return self.render('admin/edit_page.html', page=page)
+    

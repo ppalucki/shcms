@@ -3,15 +3,15 @@
 
 import set_sys_path #@UnusedImport
 # builitin libs
-import os, sys, logging
+import os, sys
 # outer libs
 
 # Is this the development server?
 debug = os.environ.get('SERVER_SOFTWARE', '').startswith('Dev')
 local = (sys.argv[0] in ('local.py', 'app/local.py'))
 if local:
-    sys.path = map(lambda p: p.replace('app/lib.zip','lib'), sys.path) # for debug replace lib.zip with local directory    
-        
+    sys.path = map(lambda p: p.replace('app/lib.zip','lib').replace('app\\lib.zip','lib'), sys.path) # for debug replace lib.zip with local directory
+    
 import webapp2
 import jinja2 #@UnusedImport
 from pytz.gae import pytz #@UnresolvedImport
