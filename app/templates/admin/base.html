@@ -1,34 +1,37 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" >
-    <head>
-        <title>Admin</title>
-        <link rel="stylesheet" type="text/css" href="/static/admin.css" />        
-    </head>    
-    <body>
-        {% if handler.flash %}        
-                    <div id="flash">{{ handler.flash }} </div>
-        {% endif %}        
-        
-        <div id="wrapper">
-            <div id="header">
-                <a id="logout" href="{{create_logout_url('/admin')}}">Wyloguj</a>
-        
-                
+  <head>
+    <title>Admin</title>
+    <link rel="stylesheet" type="text/css" href="/static/admin.css" />        
+  </head>    
+  <body>
             
-                <div id="breadcrumb">
-                    <a href="/">Home</a>/{% block breadcrumb %}
-                        <a href="{{uri_for('admin')}}">Admin</a>            
-                    {% endblock %}
-                </div>
-            </div>
-            
-            <div id="content">{% block content %}{% endblock %}</div>
-            
-            <div id="footer">
-                {% block footer %}
-                    &copy; Copyright 2011 by Paweł Pałucki.
-                {% endblock %}
-            </div>
-        </div>
-    </body>    
+    <div id="wrapper">
+      <div id="header">
+        <div id="logout">
+          {% if handler.flash %}        
+            <span id="flash">{{ handler.flash }} </span>
+          {% endif %}    
+          <span>
+          Zalgowany jako <b>"{{user.nickname()}}"</b>
+          </span>      
+          <a class="abutton" href="{{create_logout_url('/admin')}}">Wyloguj</a>  
+        </div>        
+        <ul id="crumbs">
+            <li><a href="/">Home</a></li>
+            {% block crumbs %}              
+              <li><a href="{{uri_for('admin')}}">Admin</a></li>            
+            {% endblock %}
+        </ul>
+      </div>
+      
+      <div id="content">{% block content %}{% endblock %}</div>
+      
+      <div id="footer">
+        {% block footer %}
+          &copy; Copyright 2011 by Paweł Pałucki.
+        {% endblock %}
+      </div>
+      </div>
+  </body>    
 </html>

@@ -1,17 +1,8 @@
 {% extends "admin/base.html" %}
-{% block bc %}
-Admin
-{% endblock %}
 {% block content %}
-<hr>
-<p>
-Witam "{{user.nickname()}}" w panelu admina:
-</p> 
-
-<h2>Główna akcje</h2>
-<ul>    
-    <li><a href="{{uri_for('pages')}}">Edytuj strony</a></li>
-    <li><a href="{{uri_for('vars')}}">Edytuj zmienne</a></li>
+<ul id="index_actions">    
+  <li><a class="abutton" href="{{uri_for('pages')}}">Strony</a> - przejdź do aktulizacji i edycji stron</li>
+  <li><a class="abutton" href="{{uri_for('vars')}}">Ustawienia</a>  - przejdź do zmiany ustawień</li>
 </ul>
 
 

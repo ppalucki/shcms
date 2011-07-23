@@ -1,36 +1,72 @@
 {% extends "admin/base.html" %}
-{% block breadcrumb %}{{super()}}/Pages{% endblock %}
+{% block crumbs %}
+  {{super()}}
+  <li>Strony</li>
+{% endblock %}
 {% block content %}
 
 <div class="outer_actions" >    
-    <ul class="pages_actions">
-      <li><a href="{{uri_for('update_pages')}}">Aktualizuj strony</a></li>
-      <li><a href="{{uri_for('cache_pages')}}">Aktualizuj cache</a></li>  
-    </ul>
+  <ul class="pages_actions">
+    <li><a class="abutton" href="{{uri_for('update_pages')}}">Aktualizuj strony</a></li>
+    <li><a class="abutton" href="{{uri_for('cache_pages')}}">Aktualizuj cache</a></li>  
+  </ul>
 </div>
 
+<div id="pages_filter">
+  Strony:
+  <ul id="slugs">
+    <li>         
+        <a class="slug" href="?lang={{lang_filter}}">
+            <input type="radio" {%if not slug_filter %}checked{%endif%}> wszystkie
+        </a>
+    </li>
+  {% for slug in slugs %}
+    <li>
+        
+        <a class="slug " href="?slug={{slug}}&lang={{lang_filter}}">
+          <input type="radio" {%if slug==slug_filter %}checked{%endif%}> {{slug}}
+        </a>
+    </li>
+  {% endfor %}
+  </ul> 
 
-<hr>
-<div class="pages_list">
-    <h2>Pages:</h2>
-    <ul>
-    {% for page in pages %}
-        <li class="page">
-              <b>/{{page.slug}}</b>{{ lang_img(page.lang)|safe }}
-              <span class="page_title">"{{ page.title }}"</span>
-              <span class="page_updated">{{ page.updated_local }}</span>
-              
-              <ul class="page_actions">                 
-                <li class="page_action"> <a href="{{page.edit_url}}" target="_blank" >edit_url</a> </li>
-                <li class="page_action"> <a href="{{url_for_page('edit_page', page)}}">edit</a> </li>                
-                <li class="page_action"> <a href="{{url_for_page('update_page', page)}}">update</a> </li>                
-                <li class="page_action"> <a href="{{url_for_page('dynamic_page', page)}}" target="_blank">dynamic</a> </li>         
-                <li class="page_action"> <a href="{{url_for_page('refresh_page', page)}}" target="_blank">refresh</a> </li>                       
-                <li class="page_action"> <a href="{{url_for_page('static_page', page)}}" target="_blank">static</a> </li>                            
-              </ul>
-        </li> 
-    {% endfor %}
-    </ul>
+  Język:
+  <ul id="langs">
+    <li>         
+        <a class="lang" href="?slug={{slug_filter}}">
+            <input type="radio" {%if not lang_filter %}checked{%endif%} /> wszystkie
+        </a>
+    </li>
+  {% for lang in langs %}
+    <li>        
+        <a class="lang" href="?slug={{slug_filter}}&lang={{lang}}">
+          <input type="radio" {%if lang==lang_filter %}checked{%endif%} />  
+            {{ lang_img(lang)|safe }}
+        </a>
+    </li>
+  {% endfor %}
+  </ul>     
 </div>
-<hr>
+
+<div id="pages_list">
+  <ul>
+  {% for page in pages %}
+    <li class="page">
+      {# <b>/{{page.slug}}</b> #}
+      {{ lang_img(page.lang)|safe }}
+      <span class="page_title">"{{ page.title }}"</span>
+      {#  <span class="page_updated">{{ page.updated_local }}</span> #}
+      <ul class="page_actions">                 
+        <li class="page_action"> <a class="abutton" href="{{page.edit_url}}" target="_blank" >edit_url</a> </li>
+        <li class="page_action"> <a class="abutton" href="{{url_for_page('edit_page', page)}}">edit</a> </li>                
+        <li class="page_action"> <a class="abutton" href="{{url_for_page('update_page', page)}}?slug={{slug_filter}}&lang={{lang_filter}}">update</a> </li>                
+        <li class="page_action"> <a class="abutton" href="{{url_for_page('dynamic_page', page)}}" target="_blank">dynamic</a> </li>         
+        <li class="page_action"> <a class="abutton" href="{{url_for_page('refresh_page', page)}}" target="_blank">refresh</a> </li>                       
+        <li class="page_action"> <a class="abutton" href="{{url_for_page('static_page', page)}}" target="_blank">static</a> </li>                            
+      </ul>
+    </li> 
+  {% endfor %}
+  </ul>
+</div>
+
 {% endblock %}

@@ -1,28 +1,31 @@
 {% extends "admin/base.html" %}
-{% block breadcrumb %}{{super()}}/Vars{% endblock %}
+{% block crumbs %}
+  {{super()}}
+  <li>Ustawienia</li>
+{% endblock %}
 
 {% block content %}
-<hr>
+<div class="outer_actions" >  
+  <ul>
+    <li><a class="abutton" href="{{uri_for('update_vars')}}">Aktualizuj zmienne z settings.</a></li>
+  </ul>
+</div>
 {% for form,var in forms_and_vars %}
-    <form method="POST">
-        <input type="hidden" name="name" value="{{var.name}}" />
-        <span> {{ var.desc }}</span> 
-        (<b>{{Var.get_value(var.name)}}</b>): 
-        {{ form.raw() }}
-        {% if form.raw.errors %}
-        <ul class="errorlist">
-           {% for error in form.raw.errors %}        
-           <li>{{ error }}</li>
-           {% endfor %}
-        </ul>
-        {% endif %}        
-        <input type="submit" value="Zapisz" />
-    </form>
+  <form class="vars" method="POST">
+    <span class="var_desc">{{ var.desc }}:</span> 
+    <input type="hidden" name="name" value="{{var.name}}" />
+    <span class="rawinput"> 
+    {{ form.raw() }}
+    </span>
+    {% if form.raw.errors %}
+    <ul class="errorlist">
+       {% for error in form.raw.errors %}        
+       <li>{{ error }}</li>
+       {% endfor %}
+    </ul>
+    {% endif %}    
+    <input type="submit" value="Zapisz" />
+    {#{{Var.get_value(var.name)}}#}
+  </form>
 {% endfor %}
-<hr>
-<h2>Dodatkowe akcje</h2>
-<ul>
-    <li><a href="{{uri_for('update_vars')}}">Aktualizuj zmienne z settings.</li>
-</ur>
-
 {% endblock %}

@@ -15,6 +15,10 @@ import yaml
 
 
 class AdminHandler(BaseHandler):
+    
+    def _redirect_to_pages(self):
+        uri = self.uri_for('pages')+'?'+self.request.query
+        return self.redirect(uri)        
 
     def index(self):
         return self.render('admin/index.html')
@@ -63,7 +67,7 @@ class AdminHandler(BaseHandler):
             logging.info('update_pages task "%s" at url="%s" added to queue with: enqueued=%s deleted=%s'%(name, url, task.was_enqueued,task.was_deleted))
             
         self.set_flash('Zadanie "%s" at url="%s" zakolejkowane.'%(name, url))
-        return self.redirect_to('pages')
+        return self._redirect_to_pages()
 
     def cache_pages(self):
         cnt = 0        
@@ -73,18 +77,30 @@ class AdminHandler(BaseHandler):
                 cnt+=1
             
         self.set_flash(u'Odświeżono w cache %s stron.'%cnt)
-        return self.redirect_to('pages')
+        return self._redirect_to_pages()
                 
-    def update_page(self, slug, lang):
+    def update_page(self, slug, lang):        
         page = Page.get_by(slug, lang)
         page.update_content()
         self.set_flash(u'Treść zakutalizowana i cache odświeżony.')
-        return self.redirect_to('pages')
+        return self._redirect_to_pages()
     
-
-                
-    def pages(self):                
-        return self.render('admin/pages.html', pages=Page.all().order('slug').order('lang'))
+    def pages(self):
+        slug_filter = self.request.params.get('slug','')
+        lang_filter = self.request.params.get('lang','')
+        pages = Page.all().order('slug').order('lang')
+        slugs = sorted(set((p.slug for p in pages)))
+        langs = sorted(set((p.lang for p in pages)))
+        if slug_filter:
+            pages = pages.filter('slug =', slug_filter)
+        if lang_filter:
+            pages = pages.filter('lang =', lang_filter)            
+        return self.render('admin/pages.html', 
+                           pages=pages, 
+                           slugs=slugs,
+                           langs=langs,
+                           slug_filter=slug_filter,
+                           lang_filter=lang_filter)
     
     def edit_page(self, slug, lang):
         page = Page.get_by(slug, lang) 

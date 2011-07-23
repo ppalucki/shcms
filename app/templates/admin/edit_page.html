@@ -1,5 +1,9 @@
 {% extends "admin/base.html" %}
-{% block breadcrumb %}{{super()}}/<a href={{uri_for('pages')}}>Pages</a>/Edit{% endblock %}
+{% block crumbs %}
+  {{super()}}
+  <li><a href={{uri_for('pages')}}>Pages</a></li>
+  <li>Edycja</li>
+{% endblock %}
 {% block content %}
 
 
