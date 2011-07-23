@@ -1,0 +1,9 @@
+{% extends "admin/base.html" %}
+{% block breadcrumb %}{{super()}}/<a href={{uri_for('pages')}}>Pages</a>/Edit{% endblock %}
+{% block content %}
+
+
+<iframe src="{{page.edit_url}}" >
+    <p>Your browser does not support iframes.</p>
+</iframe>
+{% endblock %}

@@ -1,13 +1,20 @@
 body {
-  border-style: solid;
-  border-width: 1px;
   background-color: #cccccc;
-  width: 1024px;
+  /* width: 1024px; */
 }
 
-#panel {
+#wrapper {
+  border-style: solid;
+  border-width: 1px;
   background-color: white;
   padding: 5px;
+  width: 1200px;
+  margin: 0 auto;
+}
+
+#header{
+  height: 50px;
+  background-color: gray;
 }
 
 a {
@@ -47,6 +54,7 @@ a {
 
 #footer {
   background-color: #d0eeff;
+  clear: both;
 }
 
 .pages_action a {
@@ -57,6 +65,8 @@ a {
   padding: 2px;  
   text-decoration: none;
   background-color: #efeefe;
+  white-space: nowrap;
+
 }
 
 .page_title {

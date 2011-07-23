@@ -5,7 +5,7 @@ ul.navigation
   padding:0;
 }
 
-a.navigation {
+.navigationa {
   display:block;
   width:60px;
 }

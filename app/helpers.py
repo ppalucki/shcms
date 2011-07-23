@@ -6,6 +6,9 @@ import string
 import settings
 from models import Var
 
+def uri_for_page(name, page):
+    return webapp2.uri_for(name, slug=page.slug, lang=page.lang)
+
 jinja2.default_config.update(
     globals=dict(
         create_login_url = users.create_login_url,
@@ -14,6 +17,8 @@ jinja2.default_config.update(
         uri_for = webapp2.uri_for,
         settings = settings,
         Var = Var,
+        uri_for_page = uri_for_page,
+        
     ),
     filters=dict(
         lower = string.lower,

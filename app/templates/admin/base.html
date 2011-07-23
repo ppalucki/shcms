@@ -5,18 +5,19 @@
         <link rel="stylesheet" type="text/css" href="/static/admin.css" />        
     </head>    
     <body>
-        <div id="panel">
-            <a id="logout" href="{{create_logout_url('/admin')}}">Wyloguj</a>
-    
-            {% if handler.flash %}        
-                <div id="flash">{{ handler.flash }} </div>
-            {% endif %}
+        <div id="wrapper">
+            <div id="header">
+                <a id="logout" href="{{create_logout_url('/admin')}}">Wyloguj</a>
         
-            <div id="breadcrumb">
-                <a href="/">Home</a> &nbsp;/                         
-                {% block breadcrumb %}
-                <a href="{{uri_for('admin')}}">Admin</a>            
-                {% endblock %}
+                {% if handler.flash %}        
+                    <div id="flash">{{ handler.flash }} </div>
+                {% endif %}
+            
+                <div id="breadcrumb">
+                    <a href="/">Home</a>/{% block breadcrumb %}
+                        <a href="{{uri_for('admin')}}">Admin</a>            
+                    {% endblock %}
+                </div>
             </div>
             
             <div id="content">{% block content %}{% endblock %}</div>

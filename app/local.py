@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*
 from google.appengine.ext import testbed
-from admin import app
+from app import app
 from django.utils import autoreload #@UnresolvedImport
 import sys
 

@@ -1,0 +1,7 @@
+{% extends "admin/base.html" %}
+{% block bc %}{{super()}}/Pages{% endblock %}
+{% block content %}
+<iframe src="{{page.edit_url}}">
+    <p>Your browser does not support iframes.</p>
+</iframe>
+{% endblock %}

@@ -31,12 +31,8 @@ class Page(db.Model):
         return u'<Page %s@%s>'%(self.slug, self.lang)
 
     @classmethod
-    def get_by_slug(cls, slug, lang):
+    def get_by(cls, slug, lang):
         return cls.all().filter('slug =', slug).filter('lang =', lang).get()
-    
-    @classmethod
-    def get_by_res_id(cls, res_id):
-        return cls.get_by_key_name(res_id)
     
     def update_content(self):
         from util import get_doc_content
@@ -51,7 +47,7 @@ class Page(db.Model):
         content = self.render_content()
         if not content:
             return
-        return memcache.set("%s@%s"%(self.slug, self.lang), content.encode('utf8'))  #@UndefinedVariable        
+        return memcache.set("%s-%s"%(self.slug, self.lang), content.encode('utf8')), content  #@UndefinedVariable        
 
     @property
     def updated_local(self):
