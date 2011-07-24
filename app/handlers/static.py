@@ -23,12 +23,24 @@ class StartHandler(BaseHandler):
         if ok:
             return content
         else:
-            self.abort(400) 
+            self.abort(400)
             
-    def home_page(self):
-        """ default home-pl """
-        return self.static_page('home', 'pl')
+    def static_content(self, slug, lang):
+        """ just return page content """
+        assert self.app.local, 'powinno dzialac tylko przy local server!'        
+        key = "content-%s-%s"%(slug, lang)       
+        body = memcache.get(key)  #@UndefinedVariable
+        if body:
+            return body     
+        page = Page.get_by(slug, lang)
+        if page is None:
+            self.abort(404)
+        memcache.set(key, page.content)  #@UndefinedVariable
+        return page.content
         
+    #
+    # serwowanie pliku statycznych z katago static
+    #
     def static(self, path):
         """ statics handling """        
         assert self.app.local, 'powinno dzialac tylko przy local server!'
@@ -42,5 +54,12 @@ class StartHandler(BaseHandler):
         fp.close()
         return webapp2.Response(output, content_type=mime_type)
     
+    #
+    # pomocnicze 
+    #
     def favicon(self):
         return self.static('favicon.ico')
+    
+    def home_page(self):
+        """ default home-pl """
+        return self.static_page('home', 'pl')    
