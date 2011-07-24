@@ -201,7 +201,7 @@ def update_photos():
 def update_photos_deffered():
     logging.info('-> update_pages_deffered')
     try:
-        update_pages()
+        update_photos()
     except Exception:
         logging.exception('<- deffered function "update_pages" exception:')
         raise deferred.PermanentTaskFailure
