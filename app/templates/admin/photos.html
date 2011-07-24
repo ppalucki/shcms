@@ -1,0 +1,32 @@
+{% extends "admin/base.html" %}
+{% block crumbs %}
+  {{super()}}
+  <li>Strony</li>
+{% endblock %}
+{% block content %}
+
+<div class="outer_actions" >    
+  <ul class="pages_actions">
+    <li><a class="abutton" href="{{uri_for('update_photos')}}">Aktualizuj zdjęcia</a></li>     
+  </ul>
+</div>
+
+<div>
+  <ul id="albums_list">
+  {% for album in albums %}    
+    <li class="album">
+      <span class="page_title">"{{album.title}}"</span>
+      <ul class="photos_list">
+      {% for photo in album.photos.order('order') %}
+        <li class="photo">
+          {{photo.width}}x{{photo.height}} "{{photo.title}}"
+          <img src="{{photo.src}}" width="50", height="50" alt="{{photo.title}}" />
+        </li>
+      {% endfor %}
+      </ul>
+    </li> 
+    <hr>
+  {% endfor %}
+  </ul>
+</div>
+{% endblock %}

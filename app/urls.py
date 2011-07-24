@@ -13,23 +13,31 @@ def RF(url, handler_func=None):
     return Route(url, handler, handler_method=name, name=name)
 
 urls = [    
-    # admin
+    ### admin
     RF(r'/admin'),
+    # ustawienia
     RF(r'/admin/vars'),
     RF(r'/admin/update_vars'),
+    # pages    
     RF(r'/admin/pages'),
     RF(r'/admin/update_pages'),
     RF(r'/admin/update_cache'),
     RF(r'/admin/update_page/<slug>-<lang>', admin.AdminHandler.update_page),
     RF(r'/admin/edit_page/<slug>-<lang>', admin.AdminHandler.edit_page),
+    # photos
+    RF(r'/admin/photos'),
+    RF(r'/admin/update_photos'),
+    
+    
+    
 
-    # dynamic
+    ### dynamic
     RF(r'/rp/<slug>-<lang>', dynamic.DynamicHandler.refresh_page),
     RF(r'/rc/<slug>-<lang>', dynamic.DynamicHandler.refresh_content),
     RF(r'/dp/<slug>-<lang>', dynamic.DynamicHandler.dynamic_page),
     RF(r'/dc/<slug>-<lang>', dynamic.DynamicHandler.dynamic_content),
     
-    # static (Local)  
+    ### static (Local)  
     RF(r'/<slug>-<lang>',    static.StartHandler.static_page),
     RF(r'/c/<slug>-<lang>',  static.StartHandler.static_content),    
     RF(r'/',                 static.StartHandler.home_page),

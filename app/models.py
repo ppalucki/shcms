@@ -23,23 +23,10 @@ class Page(db.Model):
     edit_url    = db.TextProperty()
     src         = db.TextProperty()
 
-    @property
-    def lang_icon_small_url(self):
-        return '/static/flags/%s/small.png'%self.lang
-
-    @property
-    def lang_icon_anim_url(self):
-        return '/static/flags/%s/anim.gif'%self.lang
-
-    @property
-    def lang_icon_big_url(self):
-        return '/static/flags/%s/big.gif'%self.lang
 
     @property
     def res_id(self):
         return self.key().name()
-
-
 
     def __repr__(self):
         return u'<Page %s@%s>'%(self.slug, self.lang)
@@ -49,24 +36,22 @@ class Page(db.Model):
         return cls.all().filter('slug =', slug).filter('lang =', lang).get()
     
     def update_content(self):
-        from util import get_doc_content
+        from tasks import get_doc_content
         self.content = get_doc_content(self.src)
         self.put()
         
     def render_content(self, dynamic=False):
-        from util import render_template, fix_content
-        from app import app
+        from util import render_template
         langs = reversed( Var.get_value('langs') )
         pages = list( Page.all().filter('lang =', self.lang).order('slug') )
         
         for page in pages:
             page.current = (page.key()==self.key())
         
-#        span,styles = fix_content(self.content)
-        
+#        from tasks import fix_content
+#        span,styles = fix_content(self.content)        
         return render_template('main.html', 
-#                               content=span,
-#                               styles=styles, 
+#                               content=span, styles=styles, 
                                title=self.title,
                                pages=pages,
                                langs=langs,
@@ -90,21 +75,33 @@ class Page(db.Model):
         mytz = pytz.timezone('Europe/Warsaw') 
         return pytz.utc.localize(self.updated).astimezone(mytz)
         
-
+#
+# ------------ zdjęcia --------------
+#
 class Album(db.Model):
-    name        = db.StringProperty(verbose_name=u'slug', required=True)
-    lang        = db.StringProperty(verbose_name=u'jęyzk', required=True)
+    title       = db.StringProperty(required=True)
+
+    @property
+    def res_id(self):
+        return self.key().name()
 
 class Photo(db.Model):
-    """ strona """
+    """ zdjecie """    
+    album     = db.ReferenceProperty(Album, collection_name='photos', required=True) 
+    src       = db.StringProperty(required=True)      
+    title     = db.StringProperty(required=True)
+    mimetype  = db.StringProperty(required=True)
+    width     = db.IntegerProperty(required=True)
+    height    = db.IntegerProperty(required=True)
+    order     = db.IntegerProperty()  
     
-    slug        = db.StringProperty(verbose_name=u'slug', required=True)    
-    lang        = db.StringProperty(verbose_name=u'jęyzk', required=True)
-    order       = db.FloatProperty(verbose_name=u'kolejność', required=True)    
-    hidden      = db.BooleanProperty(default=False)
-    title       = db.StringProperty(verbose_name=u'tytuł', required=True)
-    content     = db.TextProperty(verbose_name=u'treść', required=True)
-            
+    @property
+    def res_id(self):
+        return self.key().name()    
+
+#
+# ------------ ustawienia --------------
+#
 class Var(db.Model):
     """ edytowalne zmienne """        
     raw       = db.TextProperty(required=True)            
@@ -164,12 +161,6 @@ class Var(db.Model):
     
     def __repr__(self):
         return u'<Var(%s:%r)>'%(self.name, self.value)
-            
-class Image(db.Model):
-    """ obrazki """
-    title       = db.StringProperty(required=True)
-    desc        = db.StringProperty()
-    body        = db.BlobProperty(required=True) 
     
     
         

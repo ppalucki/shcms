@@ -1,10 +1,6 @@
-import gdata.docs.service
 import gdata.docs.client
-import gdata.docs.data
 import settings
 import gdata.photos.service
-import gdata.media
-import gdata.geo
 import logging
 
 from datetime import datetime
@@ -103,6 +99,8 @@ def get_albums_data(login, password):
     albums=[]
     logging.info('parsing albums...')
     for album in feed.entry:
+        if album.access.text=='private':
+            continue
         ad = dict(
             title = album.title.text,
             res_id = album.gphoto_id.text,

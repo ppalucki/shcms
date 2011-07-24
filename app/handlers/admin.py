@@ -2,12 +2,12 @@
 import webapp2
 from util import render_to_response
 from google.appengine.api import users
-from models import Var
+from models import Var, Photo, Album
 import logging
 from forms import VarForm
 from base64 import b64decode, b64encode
 from google.appengine.ext import deferred
-from util import update_pages, update_pages_deffered
+
 from models import Page
 from google.appengine.api import memcache
 from handlers.base import BaseHandler
@@ -15,15 +15,41 @@ import yaml
 
 
 class AdminHandler(BaseHandler):
-    
+
+    #
+    # ------------ utilki 
+    # 
     def _redirect_to_pages(self):
         uri = self.uri_for('pages')+'?'+self.request.query
         return self.redirect(uri)        
 
+    def _run_task(self, task_func, deffered_task_func):
+        if self.app.debug or self.app.local:
+            from gdata.client import BadAuthentication
+            logging.info('debugmode:calling: %s'%task_func.__name__)
+            try:
+                task_func()
+            except BadAuthentication, e:
+                self.set_flash('Problem z %s(): %r.'%(task_func.__name__, e))
+                return self.redirect_to('pages')
+            
+            name, url = 'test',''
+        else:
+            logging.info('deffering "%s" task...'%task_func.__name__)            
+            task = deferred.defer(deffered_task_func)
+            name = task.name
+            url = task.url
+            logging.info('"%s" task "%s" at url="%s" added to queue with: enqueued=%s deleted=%s'%(
+                           task_func.__name__, name, url, task.was_enqueued, task.was_deleted))
+        return name, url
+
     def admin(self):
         """ strona glowna admin """
         return self.render('admin/admin.html')
-
+    
+    #
+    # --- ustawienia ---
+    #
     def vars(self):
         """ strona edycji ustawien portalu """
         if self.request.method=='POST':
@@ -51,47 +77,13 @@ class AdminHandler(BaseHandler):
         self.set_flash('Zmienne zaktualizowane.')
         return self.redirect_to('vars')
     
+    #
+    # --- strony ---
+    #
     def update_pages(self):
         """ wczytanie stron z google-docs """
-        if self.app.debug or self.app.local:
-            logging.info('debugmode:calling: update_pages')
-            from gdata.client import BadAuthentication
-            try:
-                update_pages()
-            except BadAuthentication, e:
-                self.set_flash('Problem z update_pages(): %r.'%e)
-                return self.redirect_to('pages')
-            
-            name, url = 'test',''
-        else:
-            logging.info('deffering "update_pages" task...')            
-            task = deferred.defer(update_pages_deffered)
-            name = task.name
-            url = task.url
-            logging.info('update_pages task "%s" at url="%s" added to queue with: enqueued=%s deleted=%s'%(name, url, task.was_enqueued,task.was_deleted))
-            
-        self.set_flash('Zadanie "%s" at url="%s" zakolejkowane.'%(name, url))
-        return self._redirect_to_pages()
-    
-    def update_photos(self):        
-        """ wczytanie zdjec z picassa """
-        if self.app.debug or self.app.local:
-            logging.info('debugmode:calling: update_pages')
-            from gdata.client import BadAuthentication
-            try:
-                update_pages()
-            except BadAuthentication, e:
-                self.set_flash('Problem z update_pages(): %r.'%e)
-                return self.redirect_to('pages')
-            
-            name, url = 'test',''
-        else:
-            logging.info('deffering "update_pages" task...')            
-            task = deferred.defer(update_pages_deffered)
-            name = task.name
-            url = task.url
-            logging.info('update_pages task "%s" at url="%s" added to queue with: enqueued=%s deleted=%s'%(name, url, task.was_enqueued,task.was_deleted))
-            
+        from tasks import update_pages, update_pages_deffered
+        name, url = self._run_task(update_pages, update_pages_deffered )        
         self.set_flash('Zadanie "%s" at url="%s" zakolejkowane.'%(name, url))
         return self._redirect_to_pages()
 
@@ -137,3 +129,17 @@ class AdminHandler(BaseHandler):
         page = Page.get_by(slug, lang) 
         return self.render('admin/edit_page.html', page=page)
     
+    #
+    # --- photos ---
+    #
+    def photos(self):
+        """ zwroc strone ze zdjeciami """
+        albums = Album.all()
+        return self.render('admin/photos.html', albums=albums)
+    
+    def update_photos(self):        
+        """ wczytanie zdjec z picassa """
+        from tasks import update_photos, update_photos_deffered
+        name, url = self._run_task(update_photos, update_photos_deffered )        
+        self.set_flash('Zadanie "%s" at url="%s" zakolejkowane.'%(name, url))
+        return self.redirect_to('photos')
