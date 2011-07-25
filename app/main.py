@@ -6,11 +6,9 @@ import logging
 def main():
     path = os.environ['PATH_INFO']
     
-    
-    
     if path=='/gallery.xml':
         content_type = 'application/xml'
-        key = 'gallery.xml-BROKEN!'
+        key = 'gallery.xml'
         location = '/r/gallery.xml'
         
     else:
