@@ -19,3 +19,8 @@ indexes:
   properties:
   - name: slug
   - name: lang
+
+- kind: Photo
+  properties:
+  - name: album
+  - name: order

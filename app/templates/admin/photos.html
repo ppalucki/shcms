@@ -11,7 +11,7 @@
   </ul>
 </div>
 
-<div>
+<div id="albums">
   <ul id="albums_list">
   {% for album in albums %}    
     <li class="album">
@@ -20,7 +20,7 @@
       {% for photo in album.photos.order('order') %}
         <li class="photo">
           {{photo.width}}x{{photo.height}} "{{photo.title}}"
-          <img src="{{photo.src}}" width="50", height="50" alt="{{photo.title}}" />
+          <img src="{{photo.src}}" width="64", height="64" alt="{{photo.title}}" />
         </li>
       {% endfor %}
       </ul>

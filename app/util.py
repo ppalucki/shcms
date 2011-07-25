@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from data import get_docs_data, get_albums_data
+from importing import get_docs_data, get_albums_data
 from google.appengine.ext import deferred
 from helpers import render_template
 from models import Page, Album, Photo, Var

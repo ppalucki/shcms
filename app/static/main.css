@@ -8,16 +8,17 @@ body {
   border-width: 1px;
   background-color: #CCCC99;
   width: 1000px;
-  height: 800px;
+  height: 980px;
   margin: 0 auto;
 }
 
 iframe {
   width: 800px;
+  height: 750px;
   border-style: none;
   border-width: 0;
-  overflow: hidden;
-  height: 700px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* ----------------- header ---------------- */
@@ -27,7 +28,7 @@ iframe {
 }
 
 img#logo {
-  border-width: 3px;
+  border-width: 0;
   border-style: solid;
   border-color: #7d6b72;
 }
@@ -44,8 +45,8 @@ img.flag {
   border-width: 1px;
   border-style: solid;
   border-color: #2F4F4F;  
-  height: 13px;
-  width: 25px;
+  height: 20px;
+  width: 30px;
 }
 
 img.current_flag {
@@ -55,7 +56,7 @@ img.current_flag {
 
 /* ----------------- navigation ---------------- */
 div#navigation {
-  background: yellow;
+  background: #2F4FF;
   width: 200px;
   float: left;
   text-align: center;  
@@ -89,13 +90,51 @@ li#current_page {
 #content {
   width: 800px;
   margin-left: 200px;
-  overflow-y: auto;
-  
+  overflow: auto;
 }
 
 /* ----------------- footer ---------------- */
 div#footer {
-  background: #800000;
+  background: #804070;
   clear: both;
-  height: 150px;
+  height: 80px;
+  text-align: center;
 }
+
+div#footerdiv {
+  padding: 10px;
+}
+
+/* ----------------- photos ---------------- */
+div#albums {
+  overflow: auto;
+  height: 750px;  
+}
+
+ul#albums_list {
+  padding: 0;
+  margin: 0;	
+}
+li.album {
+  display: inline;
+}
+ul.photos_list{	
+  padding: 0;
+  margin: 5px;
+}
+li.photo{
+  display: inline;
+  
+}
+
+.photo img {
+  border: black solid 1px;
+}
+
+#flashcontent {
+  width: 800px;
+  height: 750px;    
+  overflow: hidden;
+}
+
+

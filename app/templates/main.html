@@ -4,11 +4,12 @@
     <link rel="stylesheet" type="text/css" href="/static/main.css" />
     <title>{{ title or Var.get_value('title') }}</title>
     {# {{styles|safe}} #}
+    {% block head_extra %}
+    {% endblock %}
   </head>
   
   <body>       
     <div id="wrapper">
-        
         <div id="header">
           <a class="logo" href="/home-{{page.lang}}">
               <img id="logo" src="/static/logo-text.jpg" />
@@ -29,15 +30,18 @@
         </div>
         
         <div id="content">
+            {% block content %}
             {# {{content|safe}} #}
-            <iframe src="{{url_for_page(content_link_type, page)}}" frameborder="0" />
+            <iframe src="{{url_for_page(content_link_type, page)}}" height="600" width="800" frameborder="0" ></iframe>
             {# {{lipsum()}} #}
+            {% endblock %}
         </div>
         
         <div id="footer">
+            <div id="footerdiv">
             &copy; Copyright 2011 by Paweł Pałucki.
             <p>The Page Footer Goes Here</p>
-
+            </div>
         </div>
         
     </div>
