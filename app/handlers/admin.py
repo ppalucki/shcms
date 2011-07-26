@@ -130,7 +130,7 @@ class AdminHandler(BaseHandler):
     def photos(self):
         """ zwroc strone ze zdjeciami """
         albums = Album.all()
-        return self.render('admin/photos.html', albums=albums)
+        return self.render('admin/photos2.html', albums=albums)
     
     def update_photos(self):        
         """ wczytanie zdjec z picassa """

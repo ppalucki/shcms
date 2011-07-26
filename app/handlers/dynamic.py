@@ -45,7 +45,7 @@ class DynamicHandler(BaseHandler):
             
     def refresh_gallery(self):
         from util import render_template
-        xml = render_template('gallery.xml', photos=Photo.all())
+        xml = render_template('gallery2.xml', photos=Photo.all())
         memcache.set("gallery.xml", xml) #@UndefinedVariable
         return webapp2.Response(xml, content_type='application/xml')
     

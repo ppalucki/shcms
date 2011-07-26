@@ -106,10 +106,7 @@ div#footerdiv {
 }
 
 /* ----------------- photos ---------------- */
-div#albums {
-  overflow: auto;
-  height: 750px;  
-}
+
 
 ul#albums_list {
   padding: 0;
@@ -131,9 +128,15 @@ li.photo{
   border: black solid 1px;
 }
 
+div#albums {
+  overflow: auto;
+  height: 750px;  
+}
+
 #flashcontent {
+  background-color: lime;
   width: 800px;
-  height: 750px;    
+  height: 7500px;    
   overflow: hidden;
 }
 

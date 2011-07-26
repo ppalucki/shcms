@@ -15,6 +15,21 @@
 
 {% block content %}
 
+<!--SIMPLEVIEWER -->
+<script type="text/javascript" src="/static/simpleviewer/js/simpleviewer.js"></script>
+<script type="text/javascript">
+  var flashvars = {};
+  flashvars.galleryURL = "/gallery.xml";
+  var params = {};
+  params.wmode = "transparent";
+  var attributes = {};
+  attributes.id = "svInstance";
+  simpleviewer.ready(function () {
+    simpleviewer.load('flashcontent', '100%', '750', '222222', true, flashvars, params, attributes);
+  });
+</script>
+<!-- ------------- -->
+
 <div id="flashcontent">
   <div id="albums">
     <ul id="albums_list">
@@ -36,7 +51,8 @@
   </div>
 
 </div> 
-
+{#
+<!--AUTOVIEWER -->
 <script type="text/javascript">
   var fo = new SWFObject("/static/autoviewer/autoviewer.swf", "autoviewer", "100%", "100%", "8", "#181818");   
   //Optional Configuration
@@ -45,5 +61,6 @@
   fo.addVariable("xmlURL", "/gallery.xml");              
   fo.write("flashcontent");     
 </script> 
-
+<!------------ -->
+#}
 {% endblock %}
