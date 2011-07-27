@@ -39,6 +39,9 @@ handlers:
   script: app.py
 - url: /rp.*
   script: app.py
+- url: /r/gallery.xml
+  script: app.py
+
 
 - url: /.*
   script: main.py

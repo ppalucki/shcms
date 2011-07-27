@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<simpleviewergallery
+	
+	galleryStyle="MODERN"
+	title=""
+	textColor="FFFFFF"
+	frameColor="ab00ba"
+	frameWidth="10"
+	thumbPosition="TOP"
+	thumbColumns="8"
+	thumbRows="1"
+	showOpenButton="FALSE"
+	showFullscreenButton="FALSE"	
+	maxImageWidth="640"
+	maxImageHeight="500"
+	useFlickr="false"
+	flickrUserName=""
+	flickrTags=""
+	languageCode="AUTO"
+	languageList=""		
+	imagePath=""
+	thumbPath=""	
+>
+
+{% for photo in photos %}
+	<image imageURL="{{photo.src_http}}" thumbURL="{{photo.src_http}}" linkURL="" linkTarget="" >
+		<caption><![CDATA[{{photo.title}}]]></caption>	
+	</image>
+{% endfor %}
+
+</simpleviewergallery>
+

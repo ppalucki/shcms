@@ -4,7 +4,7 @@ from google.appengine.api import users
 import webapp2
 import string
 import settings
-from models import Var
+from models import Var, Album
 
 def url_for_page(name, page, lang=None):
     return webapp2.uri_for(name, slug=page.slug, lang=lang or page.lang)
@@ -26,6 +26,7 @@ jinja2.default_config.update(
         uri_for = webapp2.uri_for,
         settings = settings,
         Var = Var,
+        Album = Album,
         url_for_page = url_for_page,
         url_for_flag = url_for_flag,
         lang_img = lang_img,

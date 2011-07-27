@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
-from models import Page
+from models import Page, Photo
 from handlers.base import BaseHandler
+import webapp2
+from google.appengine.api import memcache
+
 
 class DynamicHandler(BaseHandler):
 
@@ -12,10 +15,10 @@ class DynamicHandler(BaseHandler):
         """ dynamiczna strona """
         page = Page.get_by(slug, lang)       
         if page is None:
-            self.abort(404)
+            self.abort(404, detail='page not found')
         content = page.render_content(dynamic=True)
         if not content:
-            self.abort(404)
+            self.abort(404, detail='couldn''t render content')
         return content
     
     def refresh_page(self, slug, lang):
@@ -38,4 +41,12 @@ class DynamicHandler(BaseHandler):
         if ok:
             return self.redirect('/c/%s-%s'%(slug,lang))
         else:
-            self.abort(400)                  
+            self.abort(400)       
+            
+    def refresh_gallery(self):
+        from util import render_template
+        xml = render_template('gallery2.xml', photos=Photo.all())
+        memcache.set("gallery.xml", xml) #@UndefinedVariable
+        return webapp2.Response(xml, content_type='application/xml')
+    
+                       

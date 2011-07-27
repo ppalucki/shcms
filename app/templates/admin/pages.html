@@ -56,9 +56,11 @@
       <span class="page_title">"{{ page.title }}"</span>
       {#  <span class="page_updated">{{ page.updated_local }}</span> #}
       <ul class="page_actions">                 
+        {% if not page.special %}
         <li class="page_action"> <a class="abutton" href="{{page.edit_url}}" target="_blank" >edit_url</a> </li>
         <li class="page_action"> <a class="abutton" href="{{url_for_page('edit_page', page)}}">edit</a> </li>                
         <li class="page_action"> <a class="abutton" href="{{url_for_page('update_page', page)}}?slug={{slug_filter}}&lang={{lang_filter}}">update</a> </li>                
+        {% endif %}        
         <li class="page_action"> <a class="abutton" href="{{url_for_page('dynamic_page', page)}}" target="_blank">dynamic</a> </li>         
         <li class="page_action"> <a class="abutton" href="{{url_for_page('refresh_page', page)}}" target="_blank">refresh</a> </li>                       
         <li class="page_action"> <a class="abutton" href="{{url_for_page('static_page', page)}}" target="_blank">static</a> </li>                            

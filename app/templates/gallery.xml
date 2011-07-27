@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gallery frameColor="0x8899FF" 
+frameWidth="5" imagePadding="10" 
+displayTime="2" 
+enableRightClickOpen="false"
+>
+	{% for photo in photos %}
+	<image>
+		<url>{{photo.src_http}}</url>		
+		<caption><![CDATA[{{photo.title}}]]></caption>	
+		<width>{{photo.width}}</width>
+		<height>{{photo.height}}</height> 
+	</image>
+	{% endfor %}
+</gallery>
+

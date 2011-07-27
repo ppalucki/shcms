@@ -110,19 +110,14 @@ class AdminHandler(BaseHandler):
         """ edycja strona w panelu admina (z obsluga filtrow) """
         slug_filter = self.request.params.get('slug','')
         lang_filter = self.request.params.get('lang','')
-        pages = Page.all().order('slug').order('lang')
-        slugs = sorted(set((p.slug for p in pages)))
-        langs = sorted(set((p.lang for p in pages)))
-        if slug_filter:
-            pages = pages.filter('slug =', slug_filter)
-        if lang_filter:
-            pages = pages.filter('lang =', lang_filter)            
+        pages = Page.get_all_pages(slug_filter=slug_filter, lang_filter=lang_filter)
+        assert all(p.lang for p in pages)
         return self.render('admin/pages.html', 
-                           pages=pages, 
-                           slugs=slugs,
-                           langs=langs,
-                           slug_filter=slug_filter,
-                           lang_filter=lang_filter)
+                           pages = pages,
+                           slugs = Page.get_all_slugs_for_admin(),
+                           langs = Page.get_all_langs_for_admin(),
+                           slug_filter = slug_filter,
+                           lang_filter = lang_filter)
     
     def edit_page(self, slug, lang):
         """ pomocnicza edycja strone z iframe z google-docs """ 
@@ -135,7 +130,7 @@ class AdminHandler(BaseHandler):
     def photos(self):
         """ zwroc strone ze zdjeciami """
         albums = Album.all()
-        return self.render('admin/photos.html', albums=albums)
+        return self.render('admin/photos2.html', albums=albums)
     
     def update_photos(self):        
         """ wczytanie zdjec z picassa """

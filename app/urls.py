@@ -32,6 +32,7 @@ urls = [
     
 
     ### dynamic
+    RF(r'/r/gallery.xml', dynamic.DynamicHandler.refresh_gallery),
     RF(r'/rp/<slug>-<lang>', dynamic.DynamicHandler.refresh_page),
     RF(r'/rc/<slug>-<lang>', dynamic.DynamicHandler.refresh_content),
     RF(r'/dp/<slug>-<lang>', dynamic.DynamicHandler.dynamic_page),
